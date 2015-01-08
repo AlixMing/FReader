@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="FReader"
+  id="myeclipse.1420506216549"
+  context-root="/JFinal_First_Test"
+  j2ee-spec="5.0"
+  archive="FReader.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
