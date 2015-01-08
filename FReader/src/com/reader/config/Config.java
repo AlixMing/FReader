@@ -16,6 +16,9 @@ import com.reader.model.User;
 import com.reader.route.AdminRoute;
 import com.reader.route.FrontRoute;
 
+import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
+
 public class Config extends JFinalConfig{
 
 	@Override

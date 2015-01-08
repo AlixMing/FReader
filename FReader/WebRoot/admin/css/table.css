@@ -1,0 +1,8 @@
+.modal-dialog{
+	width: 400px;
+}
+#addNewActivityModel{
+	display: none;
+	position: absolute;
+	z-index: 9999;
+}
