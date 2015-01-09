@@ -1,42 +1,34 @@
 package com.reader.controller;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.plugin.spring.Inject.BY_NAME;
+import com.jfinal.plugin.spring.IocInterceptor;
 import com.reader.model.User;
-import com.reader.service.impl.UserService;
 import com.reader.service.interfaces.IUserService;
 
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 
+@Before(IocInterceptor.class)
 public class AdminController extends Controller {
 
-	private IUserService userService = new UserService();
+	@BY_NAME
+	private IUserService userService;
+	Configuration cfg = new Configuration();
 
 	public void index() throws Exception {
-	 	// freemarker 配置
-	 
-		Configuration cfg = new Configuration();
 		cfg.setDefaultEncoding("UTF-8");// 编码1
-		cfg.setDirectoryForTemplateLoading(new File("src/com/reader/templates"));
-		// cfg.setClassForTemplateLoading(test.class, "/com/reader/ftl");
 		cfg.setObjectWrapper(new DefaultObjectWrapper());
-
-		Template template = cfg.getTemplate("index.ftl");
-		template.setEncoding("UTF-8");// 编码2
-
+		cfg.setDirectoryForTemplateLoading(new File("src/com/reader/templates"));
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("a", "abbbddd");
 
@@ -47,19 +39,53 @@ public class AdminController extends Controller {
 
 		map.put("strings", strings);
 
-		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("WebRoot/admin/hello.html"), "UTF-8"));
+		// 加载模板
+		Template template = cfg.getTemplate("index.ftl");
+		template.setEncoding("UTF-8");// 编码2
+
+		// 输出到response
+		getResponse().setCharacterEncoding("UTF-8");
+		PrintWriter out = getResponse().getWriter();
+
 		template.process(map, out);
-	
+
 		out.flush();
 		out.close();
-		render("hello.html");
 	}
 
 	/*
 	 * 分页得到user列表url:/admin/getUser/pageNum>0
 	 */
 	public void getUser() {
-		renderJson("userList", userService.getUsers(getParaToInt()).getList());
+		cfg.setDefaultEncoding("UTF-8");// 编码1
+		cfg.setObjectWrapper(new DefaultObjectWrapper());
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<User> users = userService.getUsers(getPara() == null?1:getParaToInt()).getList();
+
+		map.put("users", users);
+
+		// 加载模板
+		Template template;
+		PrintWriter out = null;
+		try {
+			cfg.setDirectoryForTemplateLoading(new File("src/com/reader/templates"));
+			template = cfg.getTemplate("user.ftl");
+			template.setEncoding("UTF-8");// 编码2
+
+			// 输出到response
+			getResponse().setCharacterEncoding("UTF-8");
+			out = getResponse().getWriter();
+
+			template.process(map, out);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			out.flush();
+			out.close();
+		}
+		// renderJson("userList",userService.getUsers(getParaToInt()).getList());
 	}
 
 	/*

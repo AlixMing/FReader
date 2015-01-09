@@ -9,6 +9,8 @@ import com.jfinal.config.Routes;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.tx.TxByRegex;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
+import com.jfinal.plugin.spring.SpringPlugin;
+import com.reader.controller.DemoController;
 import com.reader.model.Blog;
 import com.reader.model.Book;
 import com.reader.model.Type;
@@ -29,6 +31,7 @@ public class Config extends JFinalConfig{
 
 	@Override
 	public void configRoute(Routes me) {
+		me.add("/demo", DemoController.class);
 		me.add(new FrontRoute());
 		me.add(new AdminRoute());
 	}
@@ -47,7 +50,7 @@ public class Config extends JFinalConfig{
 		arp.addMapping("Type", Type.class);
 		
 		//添加spring插件
-		//me.add(new SpringPlugin());
+		me.add(new SpringPlugin());
 	}
 
 	@Override

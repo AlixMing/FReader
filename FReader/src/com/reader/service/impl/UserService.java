@@ -7,7 +7,7 @@ import com.reader.service.interfaces.IUserService;
 public class UserService implements IUserService {
 
 	public Page<User> getUsers(int pageNumber) {
-		return User.me.paginate(pageNumber, 2);
+		return User.me.paginate(pageNumber, 10);
 	}
 
 	public boolean delUser(int id) {

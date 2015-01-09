@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>upload.html</title>
+
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="this is my page">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+</head>
+
+<body>
+	<div class="form_box">
+		<form action="/demo/saveFile" method="post"
+			enctype="multipart/form-data">
+			<fieldset class="solid">
+				<legend>上传文件</legend>
+				<div>
+					<!-- <label>保存位置</label> 
+					<label><input type="radio" name="bcwz" value="DB" checked="checked" />DB</label> 
+					<label><input type="radio" name="bcwz" value="FILE" />FILE</label> -->
+					<label>昵称：</label> <input type="text" name="user.name" />
+					<label>密码：</label> <input type="password" name="user.password" />					
+				</div>
+				<div>
+					<label>文件:</label> <input type="file" name="user.picture" />
+				</div>
+				<div>
+					<label>&nbsp;</label> <input value="提交" type="submit">
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</body>
+</html>
