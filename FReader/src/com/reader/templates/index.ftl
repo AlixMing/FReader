@@ -60,7 +60,7 @@
 		<ul class="nav menu">
 			<li class="active"><a href="index"><span class="glyphicon glyphicon-dashboard"></span>用户管理</a></li>
 			<li><a href="#"><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
-			<li><a href="getUser"><span class="glyphicon glyphicon-stats"></span>客户管理</a></li>
+			<li><a href="getUser/"><span class="glyphicon glyphicon-stats"></span>客户管理</a></li>
 			<li><a href="#"><span class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
 		</ul>
 	</div>

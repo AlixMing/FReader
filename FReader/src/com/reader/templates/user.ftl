@@ -12,6 +12,7 @@
 <link href="/admin/css/styles.css" rel="stylesheet">
 <link rel="stylesheet" href="/admin/css/public.css">
 <link rel="stylesheet" href="/admin/css/user.css">
+<link rel="stylesheet" href="/admin/css/green-black.css">
 
 <!--[if lt IE 9]>
 <script src="/admin/js/html5shiv.js"></script>
@@ -60,7 +61,7 @@
 		<ul class="nav menu">
 			<li><a href="/admin/index"><span class="glyphicon glyphicon-dashboard"></span>用户管理</a></li>
 			<li><a href="#"><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
-			<li class="active"><a href=""><span class="glyphicon glyphicon-stats"></span>客户管理</a></li>
+			<li class="active"><a href=""><span class="glyphicon glyphicon-stats"></span>用户管理</a></li>
 			<li><a href="#"><span class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
 		</ul>
 	</div>
@@ -71,7 +72,7 @@
 			<ol class="breadcrumb">
 				<li><a href="#"><span class="glyphicon glyphicon-home"></span>
 				</a></li>
-				<li class="active">客户</li>
+				<li class="active">用户</li>
 			</ol>
 		</div>
 		<!--/.row-->
@@ -80,28 +81,38 @@
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<!-- Default panel contents -->
-					<div class="panel-heading">客户列表</div>
+					<div class="panel-heading">用户总数：${totalRaw}</div>
 					<!-- Table -->
 					<table class="table">
 						<thead>
 							<tr>
 								<th></th>
+								<th></th>
+								<th></th>
 								<th>用户名</th>
 								<th>密码</th>
-								<th>操作</th>
+								<th></th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
 						<#list users as user>
 							<tr>
+							<form action="/admin/updateUser" role="form">
 								<td>${user_index + 1}</td>
-								<td><input type="text" value='${user.name}' />
+								<td><input type="text" style="display: none" value='${user.id}' name="user.id">
 								</td>
-								<td><input type="text" value="${user.password}" />
+								<td><img src="/${user.picture?replace('\\' , '/')}?tempid="+Math.random()" alt="图片加载失败" width="60" height="34"/>
 								</td>
-								<td><span class='confirm'><a href="#">确定</a>
-								</span> <span class='delete'><a
-										href="/DinResSys2/admin/user!delete?id=1">删除</a>
+								<td><input type="text" value='${user.name}' name="user.name"/>
+								</td>
+								<td><input type="text" value="${user.password}" name="user.password"/>
+								</td>
+								<td><span class='confirm'><input class="btn btn-primary" type="submit" value="确定">
+								</span></td>
+							</form>
+								<td><span class='delete'><a class="btn btn-primary"
+										href="/admin/delUser/${user.id}-${current}">删除</a>
 								</span></td> 
 							</tr>
 							</#list>
@@ -111,10 +122,24 @@
 			</div>
 		</div>
 		<!--/.row-->
-
-
-	</div>
-
+		
+		<div class="green-black">
+		<a href="1">First Page</a>
+		<#if current gt 2>
+		...
+		</#if>
+		<#if current != 1>
+		<a href='${current-1}'>${current-1}</a>
+		</#if>
+		<span class="current">${current}</span>
+		<#if current != totalPage>
+		<a href='${current+1}'>${current+1}</a>
+		</#if>
+		<#if totalPage gt current+1>
+		...
+		</#if>
+		<a href='${totalPage}'>Last Page</a></div>
+		
 	<!--/.main-->
 
 	<script src="js/jquery-1.11.1.min.js"></script>

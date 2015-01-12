@@ -7,7 +7,13 @@ import com.reader.service.interfaces.IUserService;
 public class UserService implements IUserService {
 
 	public Page<User> getUsers(int pageNumber) {
-		return User.me.paginate(pageNumber, 10);
+		int totalPage = User.me.paginate(pageNumber, 8).getTotalPage();
+		if(totalPage < pageNumber){
+			return User.me.paginate(totalPage, 8);
+		}
+		else {
+			return User.me.paginate(pageNumber, 8);
+		}
 	}
 
 	public boolean delUser(int id) {

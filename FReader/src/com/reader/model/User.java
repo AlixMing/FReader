@@ -13,6 +13,7 @@ mysql> desc user;
 | id       | int(11)     | NO   | PRI | NULL    | auto_increment |
 | name     | varchar(20) | NO   |     | NULL    |                |
 | password | varchar(64) | NO   |     | NULL    |                |
+| picture  | varchar(64) | YES  |     | NULL    |                |
 +----------+-------------+------+-----+---------+----------------+
  */
 @SuppressWarnings("serial")
