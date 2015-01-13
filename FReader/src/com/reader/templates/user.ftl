@@ -62,7 +62,7 @@
 			<li><a href="/admin/index"><span class="glyphicon glyphicon-dashboard"></span>用户管理</a></li>
 			<li><a href="#"><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
 			<li class="active"><a href=""><span class="glyphicon glyphicon-stats"></span>用户管理</a></li>
-			<li><a href="#"><span class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
+			<li><a href="/admin/getActivities"><span class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
 		</ul>
 	</div>
 	<!--/.sidebar-->
@@ -98,7 +98,7 @@
 						<tbody>
 						<#list users as user>
 							<tr>
-							<form action="/admin/updateUser" role="form">
+							<form action="/admin/updateUser/${current}" role="form">
 								<td>${user_index + 1}</td>
 								<td><input type="text" style="display: none" value='${user.id}' name="user.id">
 								</td>

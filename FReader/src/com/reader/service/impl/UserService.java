@@ -1,9 +1,12 @@
 package com.reader.service.impl;
 
+import org.springframework.stereotype.Service;
+
 import com.jfinal.plugin.activerecord.Page;
 import com.reader.model.User;
 import com.reader.service.interfaces.IUserService;
 
+@Service
 public class UserService implements IUserService {
 
 	public Page<User> getUsers(int pageNumber) {
