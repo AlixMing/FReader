@@ -60,9 +60,9 @@
 		</form>
 		<ul class="nav menu">
 			<li><a href="/admin/index"><span class="glyphicon glyphicon-dashboard"></span>用户管理</a></li>
-			<li><a href="#"><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
+			<li><a href="/admin/getBooks/0"><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
 			<li class="active"><a href=""><span class="glyphicon glyphicon-stats"></span>用户管理</a></li>
-			<li><a href="/admin/getActivities"><span class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
+			<li><a href="/admin/getActivities/"><span class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
 		</ul>
 	</div>
 	<!--/.sidebar-->
@@ -132,13 +132,17 @@
 		<a href='${current-1}'>${current-1}</a>
 		</#if>
 		<span class="current">${current}</span>
-		<#if current != totalPage>
+		<#if current lt totalPage>
 		<a href='${current+1}'>${current+1}</a>
 		</#if>
 		<#if totalPage gt current+1>
 		...
 		</#if>
+		<#if totalPage gte current>
 		<a href='${totalPage}'>Last Page</a></div>
+		<#else>
+		<a href='${current}'>Last Page</a></div>
+		</#if>
 		
 	<!--/.main-->
 

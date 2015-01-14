@@ -14,4 +14,5 @@ public class Activity extends Model<Activity> {
 	public Page<Activity> paginate(int pageNumber, int pageSize){
 		return paginate(pageNumber, pageSize, "select *", "from activity order by id asc");
 	}
+	
 }

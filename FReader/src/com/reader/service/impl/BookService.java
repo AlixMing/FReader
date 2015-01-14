@@ -9,8 +9,8 @@ import com.reader.service.interfaces.IBookService;
 @Service
 public class BookService implements IBookService {
 
-	public Page<Book> getBooks(int pageNumber) {
-		return Book.me.paginate(pageNumber, 10);
+	public Page<Book> getBooks(int typeId,int pageNumber) {
+		return Book.me.paginate(typeId, pageNumber, 5);
 	}
 
 	public boolean delBook(int id) {

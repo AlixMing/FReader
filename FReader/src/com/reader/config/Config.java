@@ -9,6 +9,7 @@ import com.jfinal.config.Interceptors;
 import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
+import com.jfinal.ext.interceptor.SessionInViewInterceptor;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.tx.TxByRegex;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
@@ -75,6 +76,7 @@ public class Config extends JFinalConfig{
 	public void configInterceptor(Interceptors me) {
 		me.add(new TxByRegex(".*save.*"));
 		me.add(new TxByRegex(".*update.*"));
+		me.add(new SessionInViewInterceptor());
 		//me.add(new TxByActionMethods("save", "update"));
 		//me.add(new AdminInterceptor());
 	}

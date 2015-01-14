@@ -31,4 +31,8 @@ public class User extends Model<User> {
 	public Page<User> paginate(int pageNumber, int pageSize){
 		return paginate(pageNumber, pageSize, "select *", "from user order by id asc");
 	}
+	
+	public User getByName(String name){
+		return User.me.findFirst("select * from user where name = ?", name);
+	}
 }

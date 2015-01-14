@@ -1,5 +1,6 @@
 package com.reader.service.impl;
 
+import org.apache.jasper.tagplugins.jstl.If;
 import org.springframework.stereotype.Service;
 
 import com.jfinal.plugin.activerecord.Page;
@@ -29,6 +30,17 @@ public class UserService implements IUserService {
 
 	public boolean saveUser(User user) {
 		return user.save();
+	}
+
+	public User login(User user) {
+		User userComfirm = User.me.getByName(user.getStr("name"));
+		if (userComfirm == null) {
+			return null;
+		}else if (userComfirm.get("password").equals(user.get("password"))){
+			return userComfirm;
+		}else {
+			return null;
+		}
 	}
 
 }

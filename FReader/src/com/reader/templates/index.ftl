@@ -59,9 +59,9 @@
 		</form>
 		<ul class="nav menu">
 			<li class="active"><a href="index"><span class="glyphicon glyphicon-dashboard"></span>用户管理</a></li>
-			<li><a href="#"><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
+			<li><a href="getBooks/0"><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
 			<li><a href="getUser/"><span class="glyphicon glyphicon-stats"></span>客户管理</a></li>
-			<li><a href="#"><span class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
+			<li><a href="getActivities/"><span class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
 		</ul>
 	</div>
 	<!--/.sidebar-->
@@ -85,62 +85,17 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<#list strings as s>
-								<th>${s_index}第${s}个用户</th> 
-								</#list>
+							<#if iss?exists> 
+								<tr>${iss}</tr>
+							<#else>
+								<tr>.....</tr>
+							</#if>
 							</tr>
 						</thead>
-						<!-- <tbody>
-								<tr>
-									<td>1</td>
-									<td class="price-td">
-										<ul>
-											<li>扬州炒饭&nbsp;&nbsp;x1&nbsp;&nbsp;<span class="price">￥26</span></li>
-											<li>桂林米粉&nbsp;&nbsp;x1&nbsp;&nbsp;<span class="price">￥16</span></li>
-											<li>扬州炒饭&nbsp;&nbsp;x1&nbsp;&nbsp;<span class="price">￥10</span></li>
-										</ul>
-										
-									</td>
-									<td><span class="price">￥52</span></td>
-									<td>derek</td>
-									<td>13800138000</td>
-									<td>广东五山</td>
-									<td>加饭</td>
-									<td>
-										<select class="order-status">
-											<option value="订单已提交" selected>订单已提交</option>
-											<option value="订单已确认">订单已确认</option>
-											<option value="在送">在送</option>
-											<option value="送达">送达</option>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td class="price-td">
-										<ul>
-											<li>扬州炒饭&nbsp;&nbsp;x1&nbsp;&nbsp;<span class="price">￥26</span></li>
-											<li>桂林米粉&nbsp;&nbsp;x1&nbsp;&nbsp;<span class="price">￥16</span></li>
-											<li>扬州炒饭&nbsp;&nbsp;x1&nbsp;&nbsp;<span class="price">￥10</span></li>
-										</ul>
-										
-									</td>
-									<td><span class="price">￥52</span></td>
-									<td>alix</td>
-									<td>13800138000</td>
-									<td>广东五山</td>
-									<td>加饭</td>
-									<td>
-										<select class="order-status">
-											<option value="订单已提交">订单已提交</option>
-											<option value="订单已确认">订单已确认</option>
-											<option value="在送" selected>在送</option>
-											<option value="送达">送达</option>
-										</select>
-									</td>
-								</tr>
-								
-							</tbody> -->
+						<tbody>
+						<tr>
+						</tr>
+						</tbody>
 					</table>
 				</div>
 			</div>

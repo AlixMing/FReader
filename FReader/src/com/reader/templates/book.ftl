@@ -59,9 +59,9 @@
 			</form>
 			<ul class="nav menu">
 				<li><a href="/admin/index"><span class="glyphicon glyphicon-dashboard"></span>用户管理</a></li>
-				<li><a href="/admin/getBooks/0"><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
+				<li class="active"><a href=""><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
 				<li><a href="/admin/getUser/"><span class="glyphicon glyphicon-stats"></span>用户管理</a></li>
-				<li class="active"><a href=""><span class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
+				<li><a href="/admin/getActivities/"><span class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
 			</ul>
 		</div>
 		<!--/.sidebar-->
@@ -71,7 +71,7 @@
 				<ol class="breadcrumb">
 					<li><a href="#"><span class="glyphicon glyphicon-home"></span></a>
 					</li>
-					<li class="active">活动</li>
+					<li class="active">书籍</li>
 				</ol>
 			</div>
 			<!--/.row-->
@@ -81,7 +81,7 @@
 					<div class="panel panel-default">
 						<!-- Default panel contents -->
 						<div class="panel-heading">
-						<span>活动列表</span>
+						<span>书籍列表</span>
 						<span class='add'><a href="#">新增</a></span>
 						</div>
 						<!-- Table -->
@@ -89,35 +89,31 @@
 							<thead>
 								<tr>
 									<th></th>
-									<th>活动名</th>
-									<th>发起人</th>
-									<th>描述</th>
-									<th>开始时间</th>
-									<th>结束时间</th>
-									<th>活动状态</th>
-									<th></th>
+									<th>图片</th>
+									<th width="100">书名</th>
+									<th width="100">作者</th>
+									<th width="100">类型</th>
+									<th width="500">简介</th>
+									<th>操作</th>
 								</tr>
 							</thead>
 							<tbody>
-							<#list activities as activity>
+							<#list books as book>
 								<tr>
-									<td>${activity_index + 1}</td>
-									<td>${activity.name}</td>
-									<td>${activity.getUser().name}</td>
-									<td>${activity.content}</td>
-									<td>${activity.begintime?string("yyyy-MM-dd HH:mm")}</td>
-									<td>${activity.endtime?string("yyyy-MM-dd HH:mm")}</td>
+									<td>${book_index + 1}</td>
+									<td><img src="/${book.picture?replace('\\' , '/')}?tempid="+Math.random()" alt="图片加载失败" height="80"/></td>
+									<td>${book.name}</td>
+									<td>${book.author}</td>
+									<td>${book.getType().name}</td>
 									<td>
-									<#if .now?datetime lt activity.begintime>
-										活动未开始
-									<#elseif .now?datetime lt activity.endtime>
-										活动进行中
-									<#else>
-										活动已结束
-									</#if>
-									</td>
+										<#if book.descri?length lt 100 > 
+											${book.descri}
+	                                   <#else>
+	                                    	${book.descri[0..100]}...
+	                                   </#if>
+	                                </td>
 									<td>
-										<span class='delete'><a href="/admin/delActivity/${activity.id}-${current}">删除</a></span>
+										<span class='delete'><a href="/admin/delBook/${book.id}-${current}">删除</a></span>
 									</td>
 								</tr>
 							</#list>
@@ -129,24 +125,24 @@
 			<!--/.row-->
 			<!-- 分页 -->
 			<div class="green-black">
-			<a href="1">First Page</a>
+			<a href="0-1">First Page</a>
 			<#if current gt 2>
 			...
 			</#if>
 			<#if current != 1>
-			<a href='${current-1}'>${current-1}</a>
+			<a href='0-${current-1}'>${current-1}</a>
 			</#if>
 			<span class="current">${current}</span>
 			<#if current lt totalPage>
-			<a href='${current+1}'>${current+1}</a>
+			<a href='0-${current+1}'>${current+1}</a>
 			</#if>
 			<#if totalPage gt current+1>
 			...
 			</#if>
 			<#if totalPage gte current>
-			<a href='${totalPage}'>Last Page</a></div>
+			<a href='0-${totalPage}'>Last Page</a></div>
 			<#else>
-			<a href='${current}'>Last Page</a></div>
+			<a href='0-${current}'>Last Page</a></div>
 			</#if>
 			</div>
 			
