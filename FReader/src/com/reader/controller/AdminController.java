@@ -1,27 +1,20 @@
 package com.reader.controller;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
-import com.jfinal.ext.interceptor.SessionInViewInterceptor;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.spring.Inject.BY_NAME;
 import com.jfinal.plugin.spring.IocInterceptor;
-import com.reader.config.Config;
 import com.reader.model.Activity;
 import com.reader.model.Book;
 import com.reader.model.User;
 import com.reader.service.interfaces.IActivityService;
 import com.reader.service.interfaces.IBookService;
 import com.reader.service.interfaces.IUserService;
-import freemarker.template.Template;
 
 @Before(IocInterceptor.class)
 public class AdminController extends Controller {
@@ -42,19 +35,7 @@ public class AdminController extends Controller {
 		strings.add("2");
 		map.put("strings", strings);
 
-		//System.out.println(setSessionAttr("user", "aaa").getSessionAttr("user"));
-		setAttr("iss", "aaa");
-		// 加载模板
-		Template template = Config.cfg.getTemplate("index.ftl");
-		template.setEncoding("UTF-8");// 编码2
-		// 输出到response
-		getResponse().setCharacterEncoding("UTF-8");
-		PrintWriter out = getResponse().getWriter();
-
-		template.process(map, out);
-
-		out.flush();
-		out.close();
+		setSessionAttr("user", "aaa");
 	}
 
 	// TODO
@@ -68,32 +49,14 @@ public class AdminController extends Controller {
 	 * user 分页得到user列表url:/admin/getUser/pageNum>0
 	 */
 	public void getUser() {
-		Map<String, Object> map = new HashMap<String, Object>();
 		Page<User> userPage = userService.getUsers(getPara() == null ? 1
 				: getParaToInt());
-		map.put("users", userPage.getList());
-		map.put("totalPage", userPage.getTotalPage());
-		map.put("current", userPage.getPageNumber());
-		map.put("totalRaw", userPage.getTotalRow());
+		setAttr("users", userPage.getList());
+		setAttr("totalPage", userPage.getTotalPage());
+		setAttr("current", userPage.getPageNumber());
+		setAttr("totalRaw", userPage.getTotalRow());
 
-		// 加载模板
-		Template template;
-		PrintWriter out = null;
-		try {
-			template = Config.cfg.getTemplate("user.ftl");
-			template.setEncoding("UTF-8");// 编码2
-
-			// 输出到response
-			getResponse().setCharacterEncoding("UTF-8");
-			out = getResponse().getWriter();
-			template.process(map, out);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			out.flush();
-			out.close();
-		}
-		// renderJson("userList",userService.getUsers(getParaToInt()).getList());
+		render("user.html");
 	}
 
 	// TODO 最后统一改为json数据传输，即使用Ajax异步操作，实践！！！
@@ -102,7 +65,6 @@ public class AdminController extends Controller {
 	 */
 	public void delUser() {
 		if (userService.delUser(getParaToInt(0))) {
-			// forwardAction("/admin/getUser");
 			redirect("/admin/getUser/" + getPara(1));
 		} else {
 			renderJson("{status:false}");
@@ -139,31 +101,14 @@ public class AdminController extends Controller {
 	 * url:/admin/getActivities/pageNum>0
 	 */
 	public void getActivities() {
-		Map<String, Object> map = new HashMap<String, Object>();
 		Page<Activity> activityPage = activityService
 				.getActivities(getPara() == null ? 1 : getParaToInt());
-		map.put("activities", activityPage.getList());
-		map.put("totalPage", activityPage.getTotalPage());
-		map.put("current", activityPage.getPageNumber());
-		map.put("totalRaw", activityPage.getTotalRow());
-
-		// 加载模板
-		Template template;
-		PrintWriter out = null;
-		try {
-			template = Config.cfg.getTemplate("activity.ftl");
-			template.setEncoding("UTF-8");// 编码2
-
-			// 输出到response
-			getResponse().setCharacterEncoding("UTF-8");
-			out = getResponse().getWriter();
-			template.process(map, out);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			out.flush();
-			out.close();
-		}
+		setAttr("activities", activityPage.getList());
+		setAttr("totalPage", activityPage.getTotalPage());
+		setAttr("current", activityPage.getPageNumber());
+		setAttr("totalRaw", activityPage.getTotalRow());
+		
+		render("activity.html");
 	}
 
 	// TODO 最后统一改为json数据传输，即使用Ajax异步操作，实践！！！
@@ -197,31 +142,14 @@ public class AdminController extends Controller {
 	 * url:/admin/getBooks/typeNumId-pageNum pageNum>0,typeNumId输入0-所有 
 	 */
 	public void getBooks() {
-		Map<String, Object> map = new HashMap<String, Object>();
 		Page<Book> bookPage = bookService
 				.getBooks(getParaToInt(0),getPara(1) == null ? 1 : getParaToInt(1));
-		map.put("books", bookPage.getList());
-		map.put("totalPage", bookPage.getTotalPage());
-		map.put("current", bookPage.getPageNumber());
-		map.put("totalRaw", bookPage.getTotalRow());
+		setAttr("books", bookPage.getList());
+		setAttr("totalPage", bookPage.getTotalPage());
+		setAttr("current", bookPage.getPageNumber());
+		setAttr("totalRaw", bookPage.getTotalRow());
 
-		// 加载模板
-		Template template;
-		PrintWriter out = null;
-		try {
-			template = Config.cfg.getTemplate("book.ftl");
-			template.setEncoding("UTF-8");// 编码2
-
-			// 输出到response
-			getResponse().setCharacterEncoding("UTF-8");
-			out = getResponse().getWriter();
-			template.process(map, out);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			out.flush();
-			out.close();
-		}
+		render("book.html");
 	}
 	
 	// TODO 最后统一改为json数据传输，即使用Ajax异步操作，实践！！！

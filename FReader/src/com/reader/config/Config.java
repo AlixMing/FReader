@@ -1,8 +1,5 @@
 package com.reader.config;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -29,12 +26,7 @@ import com.reader.model.User;
 import com.reader.route.AdminRoute;
 import com.reader.route.FrontRoute;
 
-import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
-
 public class Config extends JFinalConfig{
-	public static final Configuration cfg = new Configuration();
-
 	@Override
 	public void configConstant(Constants me) {
 		loadPropertyFile("config_file.txt");
@@ -77,8 +69,6 @@ public class Config extends JFinalConfig{
 		me.add(new TxByRegex(".*save.*"));
 		me.add(new TxByRegex(".*update.*"));
 		me.add(new SessionInViewInterceptor());
-		//me.add(new TxByActionMethods("save", "update"));
-		//me.add(new AdminInterceptor());
 	}
 
 	@Override
@@ -86,13 +76,6 @@ public class Config extends JFinalConfig{
 	}
 	
 	public void afterJFinalStart() {
-		cfg.setDefaultEncoding("UTF-8");// 编码1
-		cfg.setObjectWrapper(new DefaultObjectWrapper());
-		try {
-			cfg.setDirectoryForTemplateLoading(new File("src/com/reader/templates"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		System.out.println("JFinal start!");
 	}
 	
