@@ -1,8 +1,7 @@
 package com.reader.service.impl;
 
-import org.apache.jasper.tagplugins.jstl.If;
+import java.util.List;
 import org.springframework.stereotype.Service;
-
 import com.jfinal.plugin.activerecord.Page;
 import com.reader.model.User;
 import com.reader.service.interfaces.IUserService;
@@ -33,14 +32,12 @@ public class UserService implements IUserService {
 	}
 
 	public User login(User user) {
-		User userComfirm = User.me.getByName(user.getStr("name"));
-		if (userComfirm == null) {
-			return null;
-		}else if (userComfirm.get("password").equals(user.get("password"))){
-			return userComfirm;
-		}else {
-			return null;
+		List<User> userComfirm = User.me.getByName(user.getStr("name"));
+		for (User user2 : userComfirm) {
+			if(user2.get("password").equals(user.get("password")) && (user2.getInt("level") == 1)){
+				return user2;
+			}
 		}
+		return null;
 	}
-
 }

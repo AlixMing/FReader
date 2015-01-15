@@ -59,9 +59,8 @@
 			</div>
 		</form>
 		<ul class="nav menu">
-			<li><a href="/admin/index"><span class="glyphicon glyphicon-dashboard"></span>用户管理</a></li>
-			<li><a href="/admin/getBooks/0"><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
 			<li class="active"><a href=""><span class="glyphicon glyphicon-stats"></span>用户管理</a></li>
+			<li><a href="/admin/getBooks/0"><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
 			<li><a href="/admin/getActivities/"><span class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
 		</ul>
 	</div>
@@ -91,8 +90,7 @@
 								<th></th>
 								<th>用户名</th>
 								<th>密码</th>
-								<th></th>
-								<th></th>
+								<th>操作</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -108,12 +106,11 @@
 								</td>
 								<td><input type="text" value="${user.password}" name="user.password"/>
 								</td>
-								<td><span class='confirm'><input class="btn btn-primary" type="submit" value="确定">
+								<td><span class='confirm'><input class="btn btn-primary" type="submit" value="确定"></span>
+								<span class='delete'><a class="btn btn-primary"
+										href="/admin/delUser/${user.id}-${current}">删除</a>
 								</span></td>
 							</form>
-								<td><span class='delete'><a class="btn btn-primary"
-										href="/admin/delUser/${user.id}-${current}">删除</a>
-								</span></td> 
 							</tr>
 							</#list>
 						</tbody>
@@ -146,17 +143,18 @@
 		
 	<!--/.main-->
 
-	<script src="js/jquery-1.11.1.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/chart.min.js"></script>
-	<script src="js/chart-data.js"></script>
-	<script src="js/easypiechart.js"></script>
-	<script src="js/easypiechart-data.js"></script>
-	<script src="js/bootstrap-datepicker.js"></script>
-	<script src="js/bootstrap-table.js"></script>
-	<script type="text/javascript" src="../js/public/mock.js"></script>
-	<script type="text/javascript" src="../js/mock-data.js"></script>
-	<script type="text/javascript" src="js/public.js"></script>
+	<script src="/admin/js/jquery-1.11.1.min.js"></script>
+	<script src="/admin/js/bootstrap.min.js"></script>
+	<script src="/admin/js/chart.min.js"></script>
+	<script src="/admin/js/chart-data.js"></script>
+	<script src="/admin/js/easypiechart.js"></script>
+	<script src="/admin/js/easypiechart-data.js"></script>
+	<script src="/admin/js/bootstrap-datepicker.js"></script>
+	<script src="/admin/js/bootstrap-table.js"></script>
+	<script type="text/javascript" src="/js/public/mock.js"></script>
+	<script type="text/javascript" src="/js/mock-data.js"></script>
+	<script type="text/javascript" src="/admin/js/public.js"></script>
+	<script type="text/javascript" src="js/user.js"></script>
 	<script>
 		!function($) {
 			$(document)
@@ -179,7 +177,6 @@
 				$('#sidebar-collapse').collapse('hide')
 		})
 	</script>
-	<script type="text/javascript" src="js/user.js"></script>
 </body>
 
 </html>

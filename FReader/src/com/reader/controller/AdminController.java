@@ -1,14 +1,11 @@
 package com.reader.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import com.jfinal.aop.Before;
+import com.jfinal.aop.ClearInterceptor;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.spring.Inject.BY_NAME;
-import com.jfinal.plugin.spring.IocInterceptor;
+import com.reader.interceptor.AdminInterceptor;
 import com.reader.model.Activity;
 import com.reader.model.Book;
 import com.reader.model.User;
@@ -16,7 +13,7 @@ import com.reader.service.interfaces.IActivityService;
 import com.reader.service.interfaces.IBookService;
 import com.reader.service.interfaces.IUserService;
 
-@Before(IocInterceptor.class)
+@Before(AdminInterceptor.class)
 public class AdminController extends Controller {
 
 	@BY_NAME
@@ -26,23 +23,22 @@ public class AdminController extends Controller {
 	@BY_NAME
 	private IBookService bookService;
 
-	public void index() throws Exception {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("a", "abbbddd");
-
-		List<String> strings = new ArrayList<String>();
-		strings.add("1");
-		strings.add("2");
-		map.put("strings", strings);
-
-		setSessionAttr("user", "aaa");
+	public void index() {
+		redirect("/admin/getBooks/0");
 	}
 
-	// TODO
+	// TODO 拦截
+	/*
+	 * 登陆
+	 * URL：/admin/login
+	 */
+	@ClearInterceptor
 	public void login() {
-		//getSession().setAttribute("user", userService.login(getModel(User.class)));
-		System.out.println(userService.login(getModel(User.class)).getStr("name") + "....." + userService.login(getModel(User.class)).getStr("password"));
-		redirect("/admin/index");
+		User user = userService.login(getModel(User.class));
+		setSessionAttr("user", user);
+		if(user != null){
+			redirect("/admin/index");
+		}
 	}
 
 	/*
@@ -55,7 +51,6 @@ public class AdminController extends Controller {
 		setAttr("totalPage", userPage.getTotalPage());
 		setAttr("current", userPage.getPageNumber());
 		setAttr("totalRaw", userPage.getTotalRow());
-
 		render("user.html");
 	}
 
@@ -148,7 +143,6 @@ public class AdminController extends Controller {
 		setAttr("totalPage", bookPage.getTotalPage());
 		setAttr("current", bookPage.getPageNumber());
 		setAttr("totalRaw", bookPage.getTotalRow());
-
 		render("book.html");
 	}
 	
@@ -163,5 +157,14 @@ public class AdminController extends Controller {
 		} else {
 			renderJson("{status:false}");
 		}
+	}
+	
+	/*
+	 * book 查看book基本信息
+	 * url:/admin/getBookDetail/idNum
+	 */
+	public void getBookDetail() {
+		setAttr("book", bookService.getBook(getParaToInt()));
+		render("bookDetail.html");
 	}
 }

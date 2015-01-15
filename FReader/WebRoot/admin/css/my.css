@@ -1,0 +1,8 @@
+@CHARSET "UTF-8";
+.error-message{
+	color:#1cf;
+	float:right;
+}
+.check{
+	color:red;
+}

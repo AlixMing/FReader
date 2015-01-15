@@ -13,13 +13,16 @@
 </head>
 
 <body>
-	${user!"abc"} <br>
+	${user!"abc"}
+	<br>
 	<#if user??>
 	${user}
 	<#else>
 	.....
 	</#if><br>
 	${session["user"]!"fffff"}
+	<br>
+	${session.user!"fffff"}
 	<br>
 	<a href="hurry">Ìø×ªhurry</a>
 </body>

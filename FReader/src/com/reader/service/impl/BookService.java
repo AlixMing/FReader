@@ -25,4 +25,8 @@ public class BookService implements IBookService {
 		return book.save();
 	}
 
+	public Book getBook(int bookId) {
+		return Book.me.findById(bookId);
+	}
+
 }

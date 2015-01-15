@@ -10,6 +10,7 @@ import com.jfinal.ext.interceptor.SessionInViewInterceptor;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.tx.TxByRegex;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
+import com.jfinal.plugin.spring.IocInterceptor;
 import com.jfinal.plugin.spring.SpringPlugin;
 import com.reader.controller.DemoController;
 import com.reader.model.Activity;
@@ -69,6 +70,7 @@ public class Config extends JFinalConfig{
 		me.add(new TxByRegex(".*save.*"));
 		me.add(new TxByRegex(".*update.*"));
 		me.add(new SessionInViewInterceptor());
+		me.add(new IocInterceptor());
 	}
 
 	@Override

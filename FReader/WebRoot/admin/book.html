@@ -58,9 +58,8 @@
 				</div>
 			</form>
 			<ul class="nav menu">
-				<li><a href="/admin/index"><span class="glyphicon glyphicon-dashboard"></span>用户管理</a></li>
-				<li class="active"><a href=""><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
 				<li><a href="/admin/getUser/"><span class="glyphicon glyphicon-stats"></span>用户管理</a></li>
+				<li class="active"><a href=""><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
 				<li><a href="/admin/getActivities/"><span class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
 			</ul>
 		</div>
@@ -81,8 +80,8 @@
 					<div class="panel panel-default">
 						<!-- Default panel contents -->
 						<div class="panel-heading">
-						<span>书籍列表</span>
-						<span class='add'><a href="#">新增</a></span>
+						<span>书籍总数：${totalRaw}</span>
+						<span class='add' style="float:right; margin-right:20px;"><a href="#">新增</a></span>
 						</div>
 						<!-- Table -->
 						<table class="table">
@@ -102,7 +101,7 @@
 								<tr>
 									<td>${book_index + 1}</td>
 									<td><img src="/${book.picture?replace('\\' , '/')}?tempid="+Math.random()" alt="图片加载失败" height="80"/></td>
-									<td>${book.name}</td>
+									<td><a href="/admin/getBookDetail/${book.id}">${book.name}</a></td>
 									<td>${book.author}</td>
 									<td>${book.getType().name}</td>
 									<td>

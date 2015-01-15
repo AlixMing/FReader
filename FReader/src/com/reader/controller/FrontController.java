@@ -6,6 +6,7 @@ public class FrontController extends Controller {
 		//setSessionAttr("user", "aaa");
 		//setAttr("user", "aaa");
 		getRequest().getSession().setAttribute("user", "aaa");
+		
 		//render("index.jsp");
 		
 	}

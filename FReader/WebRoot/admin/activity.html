@@ -58,9 +58,8 @@
 				</div>
 			</form>
 			<ul class="nav menu">
-				<li><a href="/admin/index"><span class="glyphicon glyphicon-dashboard"></span>用户管理</a></li>
-				<li><a href="/admin/getBooks/0"><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
 				<li><a href="/admin/getUser/"><span class="glyphicon glyphicon-stats"></span>用户管理</a></li>
+				<li><a href="/admin/getBooks/0"><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
 				<li class="active"><a href=""><span class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
 			</ul>
 		</div>
@@ -81,8 +80,8 @@
 					<div class="panel panel-default">
 						<!-- Default panel contents -->
 						<div class="panel-heading">
-						<span>活动列表</span>
-						<span class='add'><a href="#">新增</a></span>
+						<span>活动总数：${totalRaw}</span>
+						<span class='add' style="float:right; margin-right:20px;"><a href="#">新增</a></span>
 						</div>
 						<!-- Table -->
 						<table class="table">
@@ -95,7 +94,7 @@
 									<th>开始时间</th>
 									<th>结束时间</th>
 									<th>活动状态</th>
-									<th></th>
+									<th>操作</th>
 								</tr>
 							</thead>
 							<tbody>
