@@ -7,17 +7,10 @@
 		<title>FReader admin</title>
 
 		<link href="/admin/css/bootstrap.min.css" rel="stylesheet">
-		<link href="/admin/css/datepicker3.css" rel="stylesheet">
-		<link href="/admin/css/bootstrap-table.css" rel="stylesheet">
 		<link href="/admin/css/styles.css" rel="stylesheet">
 		<link rel="stylesheet" href="/admin/css/public.css">
 		<link rel="stylesheet" href="/admin/css/table.css">
 		<link rel="stylesheet" href="/admin/css/green-black.css">
-
-		<!--[if lt IE 9]>
-<script src="js/html5shiv.js"></script>
-<script src="js/respond.min.js"></script>
-<![endif]-->
 
 	</head>
 
@@ -31,22 +24,13 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#"><span>Lumino</span>Admin</a>
+					<a class="navbar-brand" href="#"><span>欢迎您：</span>${session.user.name}</a>
 					<ul class="user-menu">
 						<li class="dropdown pull-right">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> User <span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-								<li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a>
-								</li>
-								<li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a>
-								</li>
-								<li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
-								</li>
-							</ul>
+							<a href="/admin/logout"><span class="glyphicon glyphicon-log-out"></span>Logout</a>
 						</li>
 					</ul>
 				</div>
-
 			</div>
 			<!-- /.container-fluid -->
 		</nav>
@@ -99,7 +83,7 @@
 							</thead>
 							<tbody>
 							<#list activities as activity>
-								<tr>
+								<tr style="height:60px">
 									<td>${activity_index + 1}</td>
 									<td>${activity.name}</td>
 									<td>${activity.getUser().name}</td>
@@ -116,7 +100,7 @@
 									</#if>
 									</td>
 									<td>
-										<span class='delete'><a href="/admin/delActivity/${activity.id}-${current}">删除</a></span>
+										<span class='delete'><a class="btn btn-primary" href="/admin/delActivity/${activity.id}-${current}">删除</a></span>
 									</td>
 								</tr>
 							</#list>
@@ -148,67 +132,5 @@
 			<a href='${current}'>Last Page</a></div>
 			</#if>
 			</div>
-			
-		<div id="addNewActivityModel" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-						</button>
-						<h4 class="modal-title" id="myModalLabel">活动信息</h4>
-					</div>
-					<div class="modal-body">
-						<div class="form-group has-success">
-							<form action="">
-								<input id="activity-name" class="form-control" placeholder="活动名">
-								<input id='activity-describe' class="form-control" placeholder="活动描述">
-								<label for="">开始时间：</label>
-								<input id='start-date' type="date"/>
-								<input id='start-time' type="time"/>
-								<label for="">结束时间：</label>
-								<input id="end-date" type="date"/>
-								<input id="end-time" type="time"/><br />
-								<label for="">折扣：</label>
-								<input id="promotion-num" type="number"/>
-							</form>
-						</div>					
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button class="commit-activity btn btn-primary" type="button">提交</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--/.main-->
-
-		<script src="/admin/js/jquery-1.11.1.min.js"></script>
-		<script src="/admin/js/bootstrap.min.js"></script>
-		<script src="/admin/js/chart.min.js"></script>
-		<script src="/admin/js/chart-data.js"></script>
-		<script src="/admin/js/easypiechart.js"></script>
-		<script src="/admin/js/easypiechart-data.js"></script>
-		<script src="/admin/js/bootstrap-datepicker.js"></script>
-		<script src="/admin/js/bootstrap-table.js"></script>
-		<script type="text/javascript" src="/js/public/mock.js" ></script>
-		<script type="text/javascript" src="/js/mock-data.js" ></script>
-		<script type="text/javascript" src="/admin/js/public.js" ></script>
-		<script>
-			! function($) {
-				$(document).on("click", "ul.nav li.parent > a > span.icon", function() {
-					$(this).find('em:first').toggleClass("glyphicon-minus");
-				});
-				$(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
-			}(window.jQuery);
-
-			$(window).on('resize', function() {
-				if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
-			})
-			 $(window).on('resize', function() {
-				if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
-			})
-		</script>
-		<script type="text/javascript" src="/admin/js/table.js"></script>
 	</body>
-
 </html>

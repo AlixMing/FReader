@@ -16,6 +16,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.plugin.spring.IocInterceptor;
 import com.jfinal.upload.UploadFile;
 import com.reader.model.Blog;
+import com.reader.model.Book;
 import com.reader.model.User;
 
 @Before(IocInterceptor.class)
@@ -71,16 +72,28 @@ public class DemoController extends Controller {
 		Db.update("blog", blogRecord);
 	}
 
-	// 上传文件测试
+	// 上传user文件测试
 	public void saveFile() {
-		UploadFile file = getFile("user.picture", "", 1024 * 1024 * 2);
+		UploadFile file = getFile("user.picture", "user", 1024 * 1024 * 2);
 		User user = getModel(User.class);
-		user.set("picture", "upload\\" + file.getFileName());
+		user.set("picture", "upload\\user\\" + file.getFileName());
 		user.save();
 		renderText(file.getFileName() + " ..... " + file.getSaveDirectory()
 				+ "--------" + user.getStr("name"));
 	}
-
+	
+	// 上传book文件测试
+	public void saveBookFile() {
+		UploadFile file = getFile("book.picture", "book", 1024 * 1024 * 2);
+		UploadFile file2 = getFile("book.url", "book", 1024 * 1024 * 5);
+		Book book = getModel(Book.class);
+		book.set("picture", "upload\\book\\" + file.getFileName());
+		book.set("url", "upload\\book\\" + file2.getFileName());
+		book.save();
+		renderText(file.getFileName() + " - " + file.getSaveDirectory()
+				+ "......." + book.getStr("name") + "......" + file2.getFileName() + " ..... " + file2.getSaveDirectory());
+	}
+	
 	// 读取文件测试
 	public void readFile() throws Exception {
 		User user = User.me.findById(20);
@@ -93,5 +106,10 @@ public class DemoController extends Controller {
 		//ok3
 		OutputStream out = new FileOutputStream(new File(JFinal.me().getServletContext().getRealPath("/") + "/" + user.getStr("picture").replace("\\", "/")));
 		renderFile(new File(JFinal.me().getServletContext().getRealPath("/") + "/" + user.getStr("picture").replace("\\", "/")));
+	}
+	
+	public void download(){
+		Book  book = Book.me.findById(getParaToInt());
+		renderFile(new File(JFinal.me().getServletContext().getRealPath("/") + "/" + book.getStr("url").replace("\\", "/")));
 	}
 }

@@ -6,3 +6,22 @@
 .check{
 	color:red;
 }
+.item{
+	color:burlywood;
+	padding-left:10px;
+	padding-top:10px;
+}
+.itemD{
+	color:#777;
+	margin-left:25px;
+}
+.message{
+	margin-left:200px;
+	margin-top:15px;
+}
+.picture{
+	float:left; 
+	margin-left:50px; 
+	margin-top:20px; 
+	width:200px;
+}

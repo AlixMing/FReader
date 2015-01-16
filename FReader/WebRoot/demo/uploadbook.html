@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>upload.html</title>
+
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="this is my page">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+</head>
+
+<body>
+	<div class="form_box">
+		<form action="/demo/saveBookFile" method="post"
+			enctype="multipart/form-data" onsubmit="return check()">
+			<fieldset class="solid">
+				<legend>book上传</legend>
+				<div>
+					<label>name：</label> <input type="text" name="book.name" /> <label>author：</label>
+					<input type="text" name="book.author" /> <label>descri：</label> <input
+						type="text" name="book.descri" /> <label>typeId：</label> <input
+						type="text" name="book.typeId" value="1" />
+				</div>
+				<div>
+					<label>picture:</label> <input id="pic" type="file" name="book.picture" />
+					<label>book:</label> <input id="book" type="file" name="book.url" />
+				</div>
+				<div>
+					<label>&nbsp;</label> <input value="提交" type="submit">
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</body>
+
+<script language="javascript">
+	function check() {
+		var picFileName = document.getElementById("pic").value;
+		var bookFileName = document.getElementById("book").value;
+		
+		if (picFileName == "") {
+			alert("请选择要上传的图片文件!");
+			return false;
+		}
+		if (bookFileName == "") {
+			alert("请选择要上传的图书文件!");
+			return false;
+		}
+		//lastIndexOf如果没有搜索到则返回为-1
+		if (picFileName.lastIndexOf(".") != -1 && bookFileName.lastIndexOf(".") != -1) {
+			var pfileType = (fileName.substring(picFileName.lastIndexOf(".") + 1,
+					picFileName.length)).toLowerCase();
+			var bfileType = (fileName.substring(bookFileName.lastIndexOf(".") + 1,
+					bookFileName.length)).toLowerCase();
+					
+			var suppotPicFile = new Array();
+			suppotPicFile[0] = "jpg";
+			suppotPicFile[1] = "png";
+			suppotPicFile[2] = "gif";
+			var suppotBookFile = new Array();
+			suppotBookFile[0] = "txt";
+			
+			for ( var i = 0; i < suppotPicFile.length; i++) {
+				if (suppotPicFile[i] == pfileType) {
+					//document.getElementById("loading").style.display = "";
+					break;
+				} else {
+					alert("不支持文件类型" + pfileType);
+					//document.getElementById("span1").innerHTML = '<INPUT TYPE="file" NAME="csv" id="csv"/>';//因为IE不支持file控件清空，所有只有重新动态的追加file控件了
+					return false;
+				}
+			}
+			for ( var i = 0; i < suppotBookFile.length; i++) {
+				if (suppotBookFile[i] == bfileType) {
+					//document.getElementById("loading").style.display = "";
+					return true;
+				} else {
+					alert("不支持文件类型" + bfileType);
+					//document.getElementById("span1").innerHTML = '<INPUT TYPE="file" NAME="csv" id="csv"/>';//因为IE不支持file控件清空，所有只有重新动态的追加file控件了
+					return false;
+				}
+			}
+		}
+	}
+</script>
+</html>

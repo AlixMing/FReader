@@ -7,12 +7,10 @@
 		<title>FReader admin</title>
 
 		<link href="/admin/css/bootstrap.min.css" rel="stylesheet">
-		<link href="/admin/css/datepicker3.css" rel="stylesheet">
-		<link href="/admin/css/bootstrap-table.css" rel="stylesheet">
 		<link href="/admin/css/styles.css" rel="stylesheet">
 		<link rel="stylesheet" href="/admin/css/public.css">
-		<link rel="stylesheet" href="/admin/css/table.css">
 		<link rel="stylesheet" href="/admin/css/green-black.css">
+		<link rel="stylesheet" href="/admin/css/my.css">
 
 		<!--[if lt IE 9]>
 <script src="js/html5shiv.js"></script>
@@ -31,18 +29,10 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#"><span>Lumino</span>Admin</a>
+					<a class="navbar-brand" href="#"><span>欢迎您：</span>${session.user.name}</a>
 					<ul class="user-menu">
 						<li class="dropdown pull-right">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> User <span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-								<li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a>
-								</li>
-								<li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a>
-								</li>
-								<li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
-								</li>
-							</ul>
+							<a href="/admin/logout"><span class="glyphicon glyphicon-log-out"></span>Logout</a>
 						</li>
 					</ul>
 				</div>
@@ -57,8 +47,8 @@
 				</div>
 			</form>
 			<ul class="nav menu">
-				<li class="active"><a href=""><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
 				<li><a href="/admin/getUser/"><span class="glyphicon glyphicon-stats"></span>用户管理</a></li>
+				<li class="active"><a href=""><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
 				<li><a href="/admin/getActivities/"><span class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
 			</ul>
 		</div>
@@ -81,31 +71,36 @@
 						<!-- Default panel contents -->
 						<div class="panel-heading">
 						<span>${book.name}</span>
+						<span style="float:right;"><a class="btn btn-primary" href="/admin/download/${book.id}">下载</a></span>
 						</div>
-						<img src="/${book.picture?replace('\\' , '/')}?tempid="+Math.random()" alt="图片加载失败" height="150"/><br>
-						<span>书名：</span>${book.name}<br>
-						<span>作者：</span>${book.author}<br>
-						<span>类型：</span>${book.getType().name}<br>
-						<span>内容：</span>${book.descri}<br>
-						<span>下载数：</span>${book.download}<br>
-						<span>总推荐数：</span>${book.recommentTime}<br>
-						<span>周推荐数：</span>${book.weekRecomment}<br>
+					<div>
+						<div class="picture">
+							<img src="/${book.picture?replace('\\' , '/')}?tempid="
+								+Math.random()" alt="图片加载失败" height="150" />
+						</div>
+						<div class="message">
+							<ul>
+								<li class="item">书名：<span class="itemD">${book.name}</span>
+								</li>
+								<li class="item">作者：<span class="itemD">${book.author}</span>
+								</li>
+								<li class="item">类型：<span class="itemD">${book.getType().name}</span>
+								</li>
+								<li class="item">下载数：<span class="itemD">${book.download}</span>
+								</li>
+								<li class="item">总推荐数：<span class="itemD">${book.recommentTime}</span>
+								</li>
+								<li class="item">周推荐数：<span class="itemD">${book.weekRecomment}</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div>
+							<h3 class="item">内容：</h3><p class="itemD">${book.descri}</p><br>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<script src="/admin/js/jquery-1.11.1.min.js"></script>
-		<script src="/admin/js/bootstrap.min.js"></script>
-		<script src="/admin/js/chart.min.js"></script>
-		<script src="/admin/js/chart-data.js"></script>
-		<script src="/admin/js/easypiechart.js"></script>
-		<script src="/admin/js/easypiechart-data.js"></script>
-		<script src="/admin/js/bootstrap-datepicker.js"></script>
-		<script src="/admin/js/bootstrap-table.js"></script>
-		<script type="text/javascript" src="/js/public/mock.js" ></script>
-		<script type="text/javascript" src="/js/mock-data.js" ></script>
-		<script type="text/javascript" src="/admin/js/public.js" ></script>
-		<script type="text/javascript" src="/admin/js/table.js"></script>
 	</body>
-
 </html>

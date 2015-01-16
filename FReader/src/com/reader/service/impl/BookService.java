@@ -29,4 +29,10 @@ public class BookService implements IBookService {
 		return Book.me.findById(bookId);
 	}
 
+	public Book download(int bookId) {
+		Book book = Book.me.findById(bookId);
+		book.set("download", book.getInt("download") + 1);
+		return book;
+	}
+
 }

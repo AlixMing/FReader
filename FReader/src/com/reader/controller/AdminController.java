@@ -1,8 +1,11 @@
 package com.reader.controller;
 
+import java.io.File;
+
 import com.jfinal.aop.Before;
 import com.jfinal.aop.ClearInterceptor;
 import com.jfinal.core.Controller;
+import com.jfinal.core.JFinal;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.spring.Inject.BY_NAME;
 import com.reader.interceptor.AdminInterceptor;
@@ -24,10 +27,9 @@ public class AdminController extends Controller {
 	private IBookService bookService;
 
 	public void index() {
-		redirect("/admin/getBooks/0");
+		redirect("/admin/getUser/");
 	}
 
-	// TODO 拦截
 	/*
 	 * 登陆
 	 * URL：/admin/login
@@ -37,10 +39,28 @@ public class AdminController extends Controller {
 		User user = userService.login(getModel(User.class));
 		setSessionAttr("user", user);
 		if(user != null){
-			redirect("/admin/index");
+			redirect("/admin/getUser/");
 		}
 	}
+	
+	/*
+	 * 退出登录
+	 * URL：/admin/logout
+	 */
+	public void logout(){
+		removeSessionAttr("user");
+		redirect("/admin/login.html");
+	}
 
+	/*
+	 * 下载书籍
+	 * url: /admin/download/IdNum
+	 */
+	public void download(){
+		Book  book = bookService.download(getParaToInt());
+		renderFile(new File(JFinal.me().getServletContext().getRealPath("/") + "/" + book.getStr("url").replace("\\", "/")));
+	}
+	
 	/*
 	 * user 分页得到user列表url:/admin/getUser/pageNum>0
 	 */

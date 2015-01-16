@@ -5,7 +5,7 @@ public class FrontController extends Controller {
 	public void index(){
 		//setSessionAttr("user", "aaa");
 		//setAttr("user", "aaa");
-		getRequest().getSession().setAttribute("user", "aaa");
+		getRequest().getSession().setAttribute("useriii", "aaa");
 		
 		//render("index.jsp");
 		
