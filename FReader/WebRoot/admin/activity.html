@@ -65,7 +65,7 @@
 						<!-- Default panel contents -->
 						<div class="panel-heading">
 						<span>活动总数：${totalRaw}</span>
-						<span class='add' style="float:right; margin-right:20px;"><a href="#">新增</a></span>
+						<span class='add' style="float:right; margin-right:20px;"><a href="/admin/newActivity">新增</a></span>
 						</div>
 						<!-- Table -->
 						<table class="table">
@@ -88,12 +88,12 @@
 									<td>${activity.name}</td>
 									<td>${activity.getUser().name}</td>
 									<td>${activity.content}</td>
-									<td>${activity.begintime?string("yyyy-MM-dd HH:mm")}</td>
-									<td>${activity.endtime?string("yyyy-MM-dd HH:mm")}</td>
+									<td>${activity.begintime?string("yyyy-MM-dd")}</td>
+									<td>${activity.endtime?string("yyyy-MM-dd")}</td>
 									<td>
-									<#if .now?datetime lt activity.begintime>
+									<#if .now?date lt activity.begintime>
 										活动未开始
-									<#elseif .now?datetime lt activity.endtime>
+									<#elseif .now?date lt activity.endtime>
 										活动进行中
 									<#else>
 										活动已结束

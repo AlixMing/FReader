@@ -18,14 +18,19 @@
 			<fieldset class="solid">
 				<legend>book上传</legend>
 				<div>
-					<label>name：</label> <input type="text" name="book.name" /> <label>author：</label>
-					<input type="text" name="book.author" /> <label>descri：</label> <input
-						type="text" name="book.descri" /> <label>typeId：</label> <input
-						type="text" name="book.typeId" value="1" />
+					<label>name：</label><input type="text" name="book.name" /> <label>author：</label><input
+						type="text" name="book.author" /> <label>descri：</label><input
+						type="text" name="book.descri" /> <label>type：</label>
+						 <select name="book.typeId">
+						 <#list types as type>
+						<option value="${type.id}">${type.name}</option>
+						</#list>
+					</select>
 				</div>
 				<div>
-					<label>picture:</label> <input id="pic" type="file" name="book.picture" />
-					<label>book:</label> <input id="book" type="file" name="book.url" />
+					<label>picture:</label> <input id="pic" type="file"
+						name="book.picture" /> <label>book:</label> <input id="book"
+						type="file" name="book.url" />
 				</div>
 				<div>
 					<label>&nbsp;</label> <input value="提交" type="submit">
@@ -40,19 +45,16 @@
 		var picFileName = document.getElementById("pic").value;
 		var bookFileName = document.getElementById("book").value;
 		
-		if (picFileName == "") {
-			alert("请选择要上传的图片文件!");
+		if (picFileName == "" || bookFileName == "") {
+			alert("请选择要上传的文件!");
 			return false;
 		}
-		if (bookFileName == "") {
-			alert("请选择要上传的图书文件!");
-			return false;
-		}
+		
 		//lastIndexOf如果没有搜索到则返回为-1
 		if (picFileName.lastIndexOf(".") != -1 && bookFileName.lastIndexOf(".") != -1) {
-			var pfileType = (fileName.substring(picFileName.lastIndexOf(".") + 1,
+			var pfileType = (picFileName.substring(picFileName.lastIndexOf(".") + 1,
 					picFileName.length)).toLowerCase();
-			var bfileType = (fileName.substring(bookFileName.lastIndexOf(".") + 1,
+			var bfileType = (bookFileName.substring(bookFileName.lastIndexOf(".") + 1,
 					bookFileName.length)).toLowerCase();
 					
 			var suppotPicFile = new Array();

@@ -1,6 +1,7 @@
 package com.reader.controller;
 
 import java.io.File;
+import java.util.List;
 
 import com.jfinal.aop.Before;
 import com.jfinal.aop.ClearInterceptor;
@@ -8,9 +9,11 @@ import com.jfinal.core.Controller;
 import com.jfinal.core.JFinal;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.spring.Inject.BY_NAME;
+import com.jfinal.upload.UploadFile;
 import com.reader.interceptor.AdminInterceptor;
 import com.reader.model.Activity;
 import com.reader.model.Book;
+import com.reader.model.Type;
 import com.reader.model.User;
 import com.reader.service.interfaces.IActivityService;
 import com.reader.service.interfaces.IBookService;
@@ -52,6 +55,7 @@ public class AdminController extends Controller {
 		redirect("/admin/login.html");
 	}
 
+	//TODO 如何实现页面下载数加1
 	/*
 	 * 下载书籍
 	 * url: /admin/download/IdNum
@@ -59,6 +63,7 @@ public class AdminController extends Controller {
 	public void download(){
 		Book  book = bookService.download(getParaToInt());
 		renderFile(new File(JFinal.me().getServletContext().getRealPath("/") + "/" + book.getStr("url").replace("\\", "/")));
+		//redirect("/admin/getBookDetail/" + getParaToInt());
 	}
 	
 	/*
@@ -110,7 +115,6 @@ public class AdminController extends Controller {
 		}
 	}
 
-	//TODO 页面活动状态
 	/*
 	 * activity 分页得到activity列表
 	 * url:/admin/getActivities/pageNum>0
@@ -122,7 +126,6 @@ public class AdminController extends Controller {
 		setAttr("totalPage", activityPage.getTotalPage());
 		setAttr("current", activityPage.getPageNumber());
 		setAttr("totalRaw", activityPage.getTotalRow());
-		
 		render("activity.html");
 	}
 
@@ -137,6 +140,13 @@ public class AdminController extends Controller {
 		} else {
 			renderJson("{status:false}");
 		}
+	}
+	
+	/*
+	 * activity 新增活动
+	 * url:/admin/newActivity
+	 */
+	public void newActivity(){
 	}
 	
 	/*
@@ -177,6 +187,28 @@ public class AdminController extends Controller {
 		} else {
 			renderJson("{status:false}");
 		}
+	}
+	
+	/*
+	 * book 新增图书
+	 * url:/admin/newBook
+	 */
+	public void newBook(){
+		setAttr("types", bookService.getAllTypes());
+	}
+	
+	/*
+	 * book 保存图书
+	 * url:/admin/saveBook
+	 */
+	public void saveBook(){
+		UploadFile file = getFile("book.picture", "book", 1024 * 1024 * 2);
+		UploadFile file2 = getFile("book.url", "book", 1024 * 1024 * 5);
+		Book book = getModel(Book.class);
+		book.set("picture", "upload\\book\\" + file.getFileName());
+		book.set("url", "upload\\book\\" + file2.getFileName());
+		book.save();
+		redirect("/admin/getBooks/0");
 	}
 	
 	/*

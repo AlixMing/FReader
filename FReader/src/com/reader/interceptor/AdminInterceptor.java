@@ -10,10 +10,10 @@ public class AdminInterceptor implements Interceptor {
 		HttpSession session = ai.getController().getSession();
 		if(session.getAttribute("user") != null){
 			ai.invoke();
-			System.out.println(ai.getActionKey() + "..........execute........." + ai.getMethodName() + "....." + session.getAttribute("user"));
+			//System.out.println(ai.getActionKey() + "..........execute........." + ai.getMethodName() + "....." + session.getAttribute("user"));
 		}else{
 			ai.getController().redirect("/admin/login.html");
 		}
-		System.out.println("hello end");
+		//System.out.println("hello end");
 	}
 }
