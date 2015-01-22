@@ -24,12 +24,16 @@ public class User extends Model<User> {
 		return Blog.me.find("select * from blog where userId = ?",get("id"));
 	}
 	
+	public List<Pbook> getPBooks(){
+		return Pbook.me.find("select * from pbook where userId = ?",get("id"));
+	}
+	
 	public List<Activity> getActivities(){
 		return Activity.me.find("select * from activity where userId = ?", get("id"));
 	}
 	
 	public Page<User> paginate(int pageNumber, int pageSize){
-		return paginate(pageNumber, pageSize, "select *", "from user order by id asc");
+		return paginate(pageNumber, pageSize, "select *", "from user where level = 2 order by id asc");
 	}
 	
 	public List<User> getByName(String name){

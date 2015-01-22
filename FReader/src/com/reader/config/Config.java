@@ -14,6 +14,7 @@ import com.jfinal.plugin.spring.IocInterceptor;
 import com.jfinal.plugin.spring.SpringPlugin;
 import com.reader.controller.DemoController;
 import com.reader.model.Activity;
+import com.reader.model.ActivityUsers;
 import com.reader.model.Blog;
 import com.reader.model.Book;
 import com.reader.model.Clocks;
@@ -60,6 +61,7 @@ public class Config extends JFinalConfig{
 		arp.addMapping("Pbook", Pbook.class);
 		arp.addMapping("Recomment", Recomment.class);
 		arp.addMapping("Timeline", Timeline.class);
+		arp.addMapping("Activity_user", ActivityUsers.class);
 		
 		//添加spring插件
 		me.add(new SpringPlugin());

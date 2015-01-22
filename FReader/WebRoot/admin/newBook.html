@@ -1,60 +1,19 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FReader admin</title>
-
-<link href="/admin/css/bootstrap.min.css" rel="stylesheet">
-<link href="/admin/css/styles.css" rel="stylesheet">
-<link rel="stylesheet" href="/admin/css/public.css">
-<link rel="stylesheet" href="/admin/css/green-black.css">
-<link rel="stylesheet" href="/admin/css/my.css">
-
-<!--[if lt IE 9]>
-<script src="js/html5shiv.js"></script>
-<script src="js/respond.min.js"></script>
-<![endif]-->
-
-</head>
-
+<#include "/admin/common/head.html"/> <@head>
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#sidebar-collapse">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#"><span>欢迎您：</span>${session.user.name}</a>
-				<ul class="user-menu">
-					<li class="dropdown pull-right"><a href="/admin/logout"><span
-							class="glyphicon glyphicon-log-out"></span>Logout</a></li>
-				</ul>
-			</div>
-		</div>
-		<!-- /.container-fluid -->
-	</nav>
-
+	<#include "/admin/common/common.html"/> <@common/>
 	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
 		<form role="search">
 			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Search">
+				<!-- <input type="text" class="form-control" placeholder="Search"> -->
 			</div>
 		</form>
 		<ul class="nav menu">
 			<li><a href="/admin/getUser/"><span
-					class="glyphicon glyphicon-stats"></span>用户管理</a>
-			</li>
+					class="glyphicon glyphicon-stats"></span>用户管理</a></li>
 			<li class="active"><a href=""><span
-					class="glyphicon glyphicon-th"></span>书籍管理</a>
-			</li>
+					class="glyphicon glyphicon-th"></span>书籍管理</a></li>
 			<li><a href="/admin/getActivities/"><span
-					class="glyphicon glyphicon-list-alt"></span>活动管理</a>
-			</li>
+					class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
 		</ul>
 	</div>
 	<!--/.sidebar-->
@@ -63,9 +22,9 @@
 		<div class="row">
 			<ol class="breadcrumb">
 				<li><a href="#"><span class="glyphicon glyphicon-home"></span>
-				</a></li>
-				<li><a href="/admin/getBooks/0">书籍</a>
+				</a>
 				</li>
+				<li><a href="/admin/getBooks/0">书籍</a></li>
 				<li class="active">新增书籍</li>
 			</ol>
 		</div>
@@ -75,9 +34,9 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">新增</div>
 					<div class="panel-body">
-						<div class="col-md-6">
-							<form role="form" action="/admin/saveBook" method="post"
-								enctype="multipart/form-data" onsubmit="return check()">
+						<form role="form" action="/admin/saveBook" method="post"
+							enctype="multipart/form-data" onsubmit="return check()">
+							<div class="col-md-6">
 
 								<div class="form-group">
 									<label>书名：</label> <input class="form-control" placeholder="书名"
@@ -95,30 +54,28 @@
 										<option value="${type.id}">${type.name}</option> </#list>
 									</select>
 								</div>
-
-								<div class="col-md-6">
-									<div class="form-group">
-										<label>封面：</label> <input type="file" id="pic"
-											name="book.picture">
-										<p class="help-block">请上传书籍封面，包括.jpg、.png格式！</p>
-									</div>
-									<div class="form-group">
-										<label>文件：</label> <input type="file" id="book"
-											name="book.url">
-										<p class="help-block">请上传书籍文件，包括.txt格式！</p>
-									</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>封面：</label> <input type="file" id="pic"
+										name="book.picture">
+									<p class="help-block">请上传书籍封面，包括.jpg、.png格式！</p>
 								</div>
-
-								<div class="col-lg-12">
-									<div class="form-group">
-										<label>书籍简介：</label>
-										<textarea class="form-control" rows="3" name="book.descri"></textarea>
-									</div>
-									<button type="submit" class="btn btn-primary">提交</button>
-									<button type="reset" class="btn btn-default">重置</button>
+								<div class="form-group">
+									<label>文件：</label> <input type="file" id="book" name="book.url">
+									<p class="help-block">请上传书籍文件，包括.txt格式！</p>
 								</div>
-							</form>
-						</div>
+							</div>
+
+							<div class="col-lg-12">
+								<div class="form-group">
+									<label>书籍简介：</label>
+									<textarea class="form-control" rows="3" name="book.descri"></textarea>
+								</div>
+								<button type="submit" class="btn btn-primary">提交</button>
+								<button type="reset" class="btn btn-default">重置</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -143,14 +100,16 @@
 			var bfileType = (bookFileName.substring(bookFileName.lastIndexOf(".") + 1,
 					bookFileName.length)).toLowerCase();
 					
-			var suppotPicFile = new Array();
-			suppotPicFile[0] = "jpg";
-			suppotPicFile[1] = "png";
-			var suppotBookFile = new Array();
-			suppotBookFile[0] = "txt";
+			var supportPicFile = new Array();
+			supportPicFile[0] = "jpg";
+			supportPicFile[1] = "png";
+			var supportBookFile = new Array();
+			supportBookFile[0] = "txt";
+			supportBookFile[1] = "umd";
+			supportBookFile[2] = "epub"
 			
-			for ( var i = 0; i < suppotPicFile.length; i++) {
-				if (suppotPicFile[i] == pfileType) {
+			for ( var i = 0; i < supportPicFile.length; i++) {
+				if (supportPicFile[i] == pfileType) {
 					//document.getElementById("loading").style.display = "";
 					break;
 				} else {
@@ -160,7 +119,7 @@
 				}
 			}
 			for ( var i = 0; i < suppotBookFile.length; i++) {
-				if (suppotBookFile[i] == bfileType) {
+				if (supportBookFile[i] == bfileType) {
 					//document.getElementById("loading").style.display = "";
 					return true;
 				} else {
@@ -172,4 +131,4 @@
 		}
 	}
 </script>
-</html>
+</@head>

@@ -31,4 +31,8 @@ public class ActivityService implements IActivityService {
 	public boolean saveActivity(Activity activity) {
 		return activity.save();
 	}
+
+	public Activity getActivity(int id) {
+		return Activity.me.findById(id);
+	}
 }

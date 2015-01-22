@@ -12,6 +12,10 @@ public class FrontController extends Controller {
 	}
 	
 	public void hurry(){
-		System.out.println(getSessionAttr("user"));
+		redirect("/admin/login.html	");
+	}
+	
+	//TODO 使用用户名+密码作为明文进行MD5加密
+	public void sign(){
 	}
 }

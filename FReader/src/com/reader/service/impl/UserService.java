@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.jfinal.plugin.activerecord.Page;
 import com.reader.model.User;
 import com.reader.service.interfaces.IUserService;
+import com.reader.util.MD5;
 
 @Service
 public class UserService implements IUserService {
@@ -32,6 +33,7 @@ public class UserService implements IUserService {
 	}
 
 	public User login(User user) {
+		user.set("password", MD5.UseMD5(user.getStr("name") + user.getStr("password"))); //使用用户名+密码作为密码加密明文
 		List<User> userComfirm = User.me.getByName(user.getStr("name"));
 		for (User user2 : userComfirm) {
 			if(user2.get("password").equals(user.get("password")) && (user2.getInt("level") == 1)){

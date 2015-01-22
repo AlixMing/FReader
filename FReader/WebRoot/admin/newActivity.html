@@ -1,62 +1,19 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FReader admin</title>
-
-<link href="/admin/css/bootstrap.min.css" rel="stylesheet">
-<link href="/admin/css/styles.css" rel="stylesheet">
-<link href="/admin/css/datepicker3.css" rel="stylesheet">
-<link rel="stylesheet" href="/admin/css/public.css">
-<link rel="stylesheet" href="/admin/css/green-black.css">
-<link rel="stylesheet" href="/admin/css/my.css">
-
-<!--[if lt IE 9]>
-<script src="js/html5shiv.js"></script>
-<script src="js/respond.min.js"></script>
-<![endif]-->
-
-</head>
-
+<#include "/admin/common/head.html"/> <@head>
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#sidebar-collapse">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#"><span>欢迎您：</span>${session.user.name}</a>
-				<ul class="user-menu">
-					<li class="dropdown pull-right"><a href="/admin/logout"><span
-							class="glyphicon glyphicon-log-out"></span>Logout</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<!-- /.container-fluid -->
-	</nav>
-
+	<#include "/admin/common/common.html"/> <@common/>
 	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
 		<form role="search">
 			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Search">
+				<!-- <input type="text" class="form-control" placeholder="Search"> -->
 			</div>
 		</form>
 		<ul class="nav menu">
 			<li><a href="/admin/getUser/"><span
-					class="glyphicon glyphicon-stats"></span>用户管理</a>
-			</li>
+					class="glyphicon glyphicon-stats"></span>用户管理</a></li>
 			<li><a href="/admin/getBooks/0"><span
-					class="glyphicon glyphicon-th"></span>书籍管理</a>
-			</li>
-			<li class="active"><a href=""><span
-					class="glyphicon glyphicon-list-alt"></span>活动管理</a>
-			</li>
+					class="glyphicon glyphicon-th"></span>书籍管理</a></li>
+			<li class="active"><a href="#"><span
+					class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
 		</ul>
 	</div>
 	<!--/.sidebar-->
@@ -65,9 +22,9 @@
 		<div class="row">
 			<ol class="breadcrumb">
 				<li><a href="#"><span class="glyphicon glyphicon-home"></span>
-				</a>
+				</a></li>
+				<li><a href="/admin/getActivities/">活动</a>
 				</li>
-				<li><a href="/admin/getActivities/">活动</a></li>
 				<li class="active">新增活动</li>
 			</ol>
 		</div>
@@ -77,13 +34,13 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">新增</div>
 					<div class="panel-body">
-						<div class="col-md-6">
-							<form role="form" action="/admin/saveActivity" method="post"
-								enctype="multipart/form-data" onsubmit="return check()">
+						<form role="form" action="/admin/saveActivity" method="get"
+							enctype="multipart/form-data" onsubmit="return check()">
+							<div class="col-md-6">
 
-								<input type="text" style="display: none" value='${session.user.id}'
-									name="activity.userId">
-									
+								<input type="text" style="display: none"
+									value='${session.user.id}' name="activity.userId">
+
 								<div class="form-group">
 									<label>活动名：</label> <input class="form-control"
 										placeholder="活动名" name="activity.name">
@@ -97,15 +54,15 @@
 								<div class="form-group">
 									<label>开始时间：</label> <input id="datepicker1"
 										class="form-control" placeholder="选择开始时间"
-										name="activity.begintime">
+										name="activity.begintime" data-date-format="yyyy-mm-dd 0:0:0">
 								</div>
 
 								<div class="form-group">
 									<label>结束时间：</label> <input id="datepicker2"
 										class="form-control" placeholder="选择结束时间"
-										name="activity.endtime" data-date-format="yyyy-mm-dd">
+										name="activity.endtime" data-date-format="yyyy-mm-dd 23:59:59">
 								</div>
- 
+
 								<div class="form-group">
 									<label>活动简介：</label>
 									<textarea class="form-control" rows="3" name="activity.content"></textarea>
@@ -113,30 +70,28 @@
 
 								<button type="submit" class="btn btn-primary">提交</button>
 								<button type="reset" class="btn btn-default">重置</button>
-
+							</div>
 						</form>
 					</div>
 				</div>
+				<!-- /.col-->
 			</div>
-			<!-- /.col-->
 		</div>
 	</div>
-	</div>
 </body>
-<script src="js/jquery-1.11.1.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/chart.min.js"></script>
-<script src="js/chart-data.js"></script>
-<script src="js/easypiechart.js"></script>
-<script src="js/easypiechart-data.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-
 <script language="javascript">
 	$("#datepicker1").datepicker({});
 	$("#datepicker2").datepicker({});
 	
 	function check() {
-	return true;
+	var begin = document.getElementById("datepicker1").value;
+	var end = document.getElementById("datepicker2").value;
+	if(begin > end){
+		alert("结束时间必须大于开始时间");
+		return false;
+	}
+	else
+		return true;
 	}
 </script>
-</html>
+</@head>

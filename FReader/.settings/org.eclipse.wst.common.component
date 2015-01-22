@@ -3,7 +3,7 @@
     <wb-module deploy-name="JFinal_First_Test">
         <wb-resource deploy-path="/" source-path="/WebRoot"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="context-root" value="/JFinal_First_Test"/>
         <property name="java-output-path" value="/JFinal_First_Test/WebRoot/WEB-INF/classes"/>
+        <property name="context-root" value="/FReader"/>
     </wb-module>
 </project-modules>

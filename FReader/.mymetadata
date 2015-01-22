@@ -3,7 +3,7 @@
   type="WEB"
   name="FReader"
   id="myeclipse.1420506216549"
-  context-root="/JFinal_First_Test"
+  context-root="/FReader"
   j2ee-spec="5.0"
   archive="FReader.war">
   <attributes>

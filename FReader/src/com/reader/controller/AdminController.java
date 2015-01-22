@@ -12,12 +12,20 @@ import com.jfinal.plugin.spring.Inject.BY_NAME;
 import com.jfinal.upload.UploadFile;
 import com.reader.interceptor.AdminInterceptor;
 import com.reader.model.Activity;
+import com.reader.model.ActivityUsers;
 import com.reader.model.Book;
-import com.reader.model.Type;
+import com.reader.model.Comments;
+import com.reader.model.Pbook;
 import com.reader.model.User;
 import com.reader.service.interfaces.IActivityService;
+import com.reader.service.interfaces.IActivityUsersService;
 import com.reader.service.interfaces.IBookService;
+import com.reader.service.interfaces.ICommentService;
+import com.reader.service.interfaces.ITimelineService;
 import com.reader.service.interfaces.IUserService;
+import com.reader.util.MD5;
+
+import freemarker.core.Comment;
 
 @Before(AdminInterceptor.class)
 public class AdminController extends Controller {
@@ -28,7 +36,13 @@ public class AdminController extends Controller {
 	private IActivityService activityService;
 	@BY_NAME
 	private IBookService bookService;
-
+	@BY_NAME
+	private ICommentService commentService;
+	@BY_NAME
+	private ITimelineService timelineService;
+	@BY_NAME
+	private IActivityUsersService activityUsersService;
+	
 	public void index() {
 		redirect("/admin/getUser/");
 	}
@@ -107,12 +121,26 @@ public class AdminController extends Controller {
 	public void updateUser() {
 		User user = User.me.findById(getModel(User.class).get("id"));
 		user.set("name", getModel(User.class).get("name")).set("password",
-				getModel(User.class).get("password"));
+				MD5.UseMD5(getModel(User.class).getStr("name") + getModel(User.class).getStr("password")));
 		if (userService.updateUser(user)) {
 			redirect("/admin/getUser/" + getPara());
 		} else {
 			renderJson("{status:false}");
 		}
+	}
+	
+	/*
+	 * user 得到user的读书记录、活动记录和时间线信息
+	 * url:/admin/getUserDetail/idNum
+	 */
+	public void getUserDetail(){
+		User user = User.me.findById(getParaToInt());
+		setAttr("userName", user.get("name"));
+		setAttr("books", user.getPBooks());
+		setAttr("myActivities", user.getActivities());
+		setAttr("activities", activityUsersService.getActivityUsersByUser(getParaToInt()));
+		setAttr("timeline", timelineService.getTimelines(user.getInt("id")));
+		render("userDetail.html");
 	}
 
 	/*
@@ -163,12 +191,21 @@ public class AdminController extends Controller {
 	}
 	
 	/*
+	 * activity 得到activity详情
+	 * url:/admin/getActivityDetail/
+	 */
+	public void getActivityDetail(){
+		setAttr("activity",  activityService.getActivity(getParaToInt()));
+		render("activityDetail.html");
+	}
+	
+	/*
 	 * book 分页得到book列表
-	 * url:/admin/getBooks/typeNumId-pageNum pageNum>0,typeNumId输入0-所有 
+	 * url:/admin/getBooks/pageNum-typeNumId  pageNum>0,typeNumId输入0-所有 
 	 */
 	public void getBooks() {
 		Page<Book> bookPage = bookService
-				.getBooks(getParaToInt(0),getPara(1) == null ? 1 : getParaToInt(1));
+				.getBooks(getPara(1) == null ? 0 : getParaToInt(1),getPara(0) == null ? 1 : getParaToInt(0));
 		setAttr("books", bookPage.getList());
 		setAttr("totalPage", bookPage.getTotalPage());
 		setAttr("current", bookPage.getPageNumber());
@@ -207,6 +244,7 @@ public class AdminController extends Controller {
 		Book book = getModel(Book.class);
 		book.set("picture", "upload\\book\\" + file.getFileName());
 		book.set("url", "upload\\book\\" + file2.getFileName());
+		book.set("descri", book.getStr("descri").replaceAll("\r\n", "<br>"));
 		book.save();
 		redirect("/admin/getBooks/0");
 	}
@@ -216,7 +254,9 @@ public class AdminController extends Controller {
 	 * url:/admin/getBookDetail/idNum
 	 */
 	public void getBookDetail() {
-		setAttr("book", bookService.getBook(getParaToInt()));
+		Book book = bookService.getBook(getParaToInt());
+		setAttr("book", book);
+		setAttr("comments", commentService.getCommentByBookId(getParaToInt()));
 		render("bookDetail.html");
 	}
 }

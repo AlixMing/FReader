@@ -1,78 +1,44 @@
-<!DOCTYPE html>
-<html>
-
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>FReader admin</title>
-
-		<link href="/admin/css/bootstrap.min.css" rel="stylesheet">
-		<link href="/admin/css/styles.css" rel="stylesheet">
-		<link rel="stylesheet" href="/admin/css/public.css">
-		<link rel="stylesheet" href="/admin/css/green-black.css">
-		<link rel="stylesheet" href="/admin/css/my.css">
-
-		<!--[if lt IE 9]>
-<script src="js/html5shiv.js"></script>
-<script src="js/respond.min.js"></script>
-<![endif]-->
-
-	</head>
-
-	<body>
-		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="#"><span>欢迎您：</span>${session.user.name}</a>
-					<ul class="user-menu">
-						<li class="dropdown pull-right">
-							<a href="/admin/logout"><span class="glyphicon glyphicon-log-out"></span>Logout</a>
-						</li>
-					</ul>
-				</div>
+<#include "/admin/common/head.html"/> <@head>
+<body>
+	<#include "/admin/common/common.html"/> <@common/>
+	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<form role="search">
+			<div class="form-group">
+				<!-- <input type="text" class="form-control" placeholder="Search"> -->
 			</div>
-			<!-- /.container-fluid -->
-		</nav>
+		</form>
+		<ul class="nav menu">
+			<li><a href="/admin/getUser/"><span
+					class="glyphicon glyphicon-stats"></span>用户管理</a></li>
+			<li class="active"><a href=""><span
+					class="glyphicon glyphicon-th"></span>书籍管理</a></li>
+			<li><a href="/admin/getActivities/"><span
+					class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
+		</ul>
+	</div>
+	<!--/.sidebar-->
 
-		<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-			<form role="search">
-				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Search">
-				</div>
-			</form>
-			<ul class="nav menu">
-				<li><a href="/admin/getUser/"><span class="glyphicon glyphicon-stats"></span>用户管理</a></li>
-				<li class="active"><a href=""><span class="glyphicon glyphicon-th"></span>书籍管理</a></li>
-				<li><a href="/admin/getActivities/"><span class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
-			</ul>
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="#"><span class="glyphicon glyphicon-home"></span>
+				</a>
+				</li>
+				<li><a href="/admin/getBooks/0">书籍</a></li>
+				<li class="active">书籍详情</li>
+			</ol>
 		</div>
-		<!--/.sidebar-->
+		<!--/.row-->
 
-		<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-			<div class="row">
-				<ol class="breadcrumb">
-					<li><a href="#"><span class="glyphicon glyphicon-home"></span></a>
-					</li>
-					<li><a href="/admin/getBooks/0">书籍</a></li>
-					<li class="active">书籍详情</li>
-				</ol>
-			</div>
-			<!--/.row-->
-
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="panel panel-default">
-						<!-- Default panel contents -->
-						<div class="panel-heading">
-						<span>${book.name}</span>
-						<span style="float:right;"><a class="btn btn-primary" href="/admin/download/${book.id}">下载</a></span>
-						</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<!-- Default panel contents -->
+					<div class="panel-heading">
+						<span>${book.name}</span> <span style="float:right;"><a
+							class="btn btn-primary" href="/admin/download/${book.id}">下载</a>
+						</span>
+					</div>
 					<div>
 						<div class="picture">
 							<img src="/${book.picture?replace('\\' , '/')}?tempid="
@@ -96,11 +62,55 @@
 						</div>
 					</div>
 					<div>
-							<h3 class="item">内容：</h3><p class="itemD">${book.descri}</p><br>
+						<h3 class="item">内容简介：</h3>
+						<p class="itemD">${book.descri}</p>
+					</div>
+					<div>
+						<h3 class="item">评论：</h3>
+						<#if comments??>
+						<div class="panel-body">
+							<table class="table">
+								<thead>
+									<tr>
+										<th style="width:250px">评论内容</th>
+										<th>评论时间</th>
+										<th>评论人</th>
+									</tr>
+								</thead>
+								<tbody>
+									<#list comments as comment>
+									<tr>
+										<td>${comment.content}<br> <span style="color:#F40">赞（${comment.praise}）</span>
+										</td>
+										<td>${comment.createTime}</td>
+										<td>${comment.getUser().name}</td>
+									</tr>
+									</#list>
+								</tbody>
+							</table>
 						</div>
+						</#if>
 					</div>
 				</div>
 			</div>
 		</div>
-	</body>
-</html>
+	</div>
+</body>
+<script>
+	!function($) {
+		$(document).on("click", "ul.nav li.parent > a > span.icon", function() {
+			$(this).find('em:first').toggleClass("glyphicon-minus");
+		});
+		$(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
+	}(window.jQuery);
+
+	$(window).on('resize', function() {
+		if ($(window).width() > 768)
+			$('#sidebar-collapse').collapse('show')
+	})
+	$(window).on('resize', function() {
+		if ($(window).width() <= 767)
+			$('#sidebar-collapse').collapse('hide')
+	})
+</script>
+</@head>

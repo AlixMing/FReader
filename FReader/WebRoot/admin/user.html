@@ -1,42 +1,10 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FReader admin</title>
-<link href="/admin/css/bootstrap.min.css" rel="stylesheet">
-<link href="/admin/css/styles.css" rel="stylesheet">
-<link rel="stylesheet" href="/admin/css/public.css">
-<link rel="stylesheet" href="/admin/css/green-black.css">
-</head>
-
+<#include "/admin/common/head.html"/> <@head>
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#sidebar-collapse">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#"><span>欢迎您：</span>${session.user.name}</a>
-				<ul class="user-menu">
-					<li class="dropdown pull-right">
-					<a href="/admin/logout"><span class="glyphicon glyphicon-log-out"></span>Logout</a>
-					</li>
-				</ul>
-			</div>
-
-		</div>
-		<!-- /.container-fluid -->
-	</nav>
-
+	<#include "/admin/common/common.html"/> <@common/>
 	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
 		<form role="search">
 			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Search">
+				<!-- <input type="text" class="form-control" placeholder="Search"> -->
 			</div>
 		</form>
 		<ul class="nav menu">
@@ -88,16 +56,16 @@
 									<td>${user_index + 1}</td>
 									<td><input type="text" style="display: none"
 										value='${user.id}' name="user.id"></td>
-									<td><img
-										src="/${user.picture?replace('\\' , '/')}?tempid="
-										+Math.random()" alt="图片加载失败" width="60" height="34" /></td>
-									<td><input type="text" value='${user.name}'
+									<td><a href="/admin/getUserDetail/${user.id}"><img
+											src="/${user.picture?replace('\\' , '/')}?tempid="
+											+Math.random()" alt="图片加载失败" width="60" height="34" /> </a></td>
+									<td><input id="name" type="text" value='${user.name}'
 										name="user.name" /></td>
-									<td><input type="text" value="${user.password}"
-										name="user.password" /></td>
+									<td><input id="pw" type="text" name="user.password"
+										placeholder="******" /></td>
 									<td><span class='confirm'><input
-											class="btn btn-primary" type="submit" value="修改">
-									</span> <span class='delete'><a class="btn btn-primary"
+											class="btn btn-primary" type="submit" value="修改"> </span> <span
+										class='delete'><a class="btn btn-primary"
 											href="/admin/delUser/${user.id}-${current}">删除</a> </span>
 									</td>
 								</form>
@@ -110,16 +78,7 @@
 		</div>
 		<!--/.row-->
 
-		<div class="green-black">
-			<a href="1">First Page</a> <#if current gt 2> ... </#if> <#if current
-			!= 1> <a href='${current-1}'>${current-1}</a> </#if> <span
-				class="current">${current}</span> <#if current lt totalPage> <a
-				href='${current+1}'>${current+1}</a> </#if> <#if totalPage gt
-			current+1> ... </#if> <#if totalPage gte current> <a
-				href='${totalPage}'>Last Page</a>
-		</div>
-		<#else> <a href='${current}'>Last Page</a>
+		<#include "/admin/common/page.html"/> <@page/>
 	</div>
-	</#if>
 </body>
-</html>
+</@head>
