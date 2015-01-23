@@ -1,8 +1,6 @@
 package com.reader.controller;
 
 import java.io.File;
-import java.util.List;
-
 import com.jfinal.aop.Before;
 import com.jfinal.aop.ClearInterceptor;
 import com.jfinal.core.Controller;
@@ -12,10 +10,7 @@ import com.jfinal.plugin.spring.Inject.BY_NAME;
 import com.jfinal.upload.UploadFile;
 import com.reader.interceptor.AdminInterceptor;
 import com.reader.model.Activity;
-import com.reader.model.ActivityUsers;
 import com.reader.model.Book;
-import com.reader.model.Comments;
-import com.reader.model.Pbook;
 import com.reader.model.User;
 import com.reader.service.interfaces.IActivityService;
 import com.reader.service.interfaces.IActivityUsersService;
@@ -24,8 +19,6 @@ import com.reader.service.interfaces.ICommentService;
 import com.reader.service.interfaces.ITimelineService;
 import com.reader.service.interfaces.IUserService;
 import com.reader.util.MD5;
-
-import freemarker.core.Comment;
 
 @Before(AdminInterceptor.class)
 public class AdminController extends Controller {
@@ -53,7 +46,7 @@ public class AdminController extends Controller {
 	 */
 	@ClearInterceptor
 	public void login() {
-		User user = userService.login(getModel(User.class));
+		User user = userService.login(1, getModel(User.class));
 		setSessionAttr("user", user);
 		if(user != null){
 			redirect("/admin/getUser/");
@@ -246,7 +239,7 @@ public class AdminController extends Controller {
 		book.set("url", "upload\\book\\" + file2.getFileName());
 		book.set("descri", book.getStr("descri").replaceAll("\r\n", "<br>"));
 		book.save();
-		redirect("/admin/getBooks/0");
+		redirect("/admin/getBooks/");
 	}
 	
 	/*

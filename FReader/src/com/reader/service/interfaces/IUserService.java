@@ -8,5 +8,5 @@ public interface IUserService {
 	boolean delUser(int id);
 	boolean updateUser(User user);
 	boolean saveUser(User user);
-	User login(User user);
+	User login(int loginType, User user);
 }

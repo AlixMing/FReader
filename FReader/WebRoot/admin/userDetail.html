@@ -10,7 +10,7 @@
 		<ul class="nav menu">
 			<li class="active"><a href="#"><span
 					class="glyphicon glyphicon-stats"></span>用户管理</a></li>
-			<li><a href="/admin/getBooks/0"><span
+			<li><a href="/admin/getBooks/"><span
 					class="glyphicon glyphicon-th"></span>书籍管理</a></li>
 			<li><a href="/admin/getActivities/"><span
 					class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
@@ -32,47 +32,57 @@
 
 		<div class="row">
 			<div class="col-lg-12">
+				<div class="panel-heading">
+					<span>${userName}</span> <span style="float:right;"> </span>
+				</div>
 				<div class="panel panel-default">
-					<!-- Default panel contents -->
-					<div class="panel-heading">
-						<span>${userName}</span> <span style="float:right;"> </span>
-					</div>
-					<div>
-						<h3 class="item">个人书库：</h3>
-						<#if books??> <#list books as book>
-						<ul>
-							<li><a href="/admin/getBookDetail/${book.id}">${book.getBook().name}</a>
+					<div class="panel-body tabs">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab1" data-toggle="tab">个人书库</a>
+							</li>
+							<li><a href="#tab2" data-toggle="tab">活动列表</a>
+							</li>
+							<li><a href="#tab3" data-toggle="tab">读书历程</a>
 							</li>
 						</ul>
-						</#list> </#if>
-					</div>
-					<div>
-						<h3 class="item">活动列表：</h3>
-						<h4 class="item">发起的活动</h4>
-						<#if myActivities??> <#list myActivities as myactivity>
-						<ul>
-							<li><a href="/admin/getActivityDetail/${myactivity.id}">${myactivity.name}</a>
-							</li>
-						</ul>
-						</#list> </#if>
-						<h4 class="item">参加的活动</h4>
-						<#if activities??> <#list activities as activity>
-						<ul>
-							<li><a
-								href="/admin/getActivityDetail/${activity.getActivity().id}">${activity.getActivity().name}</a>
-							</li>
-						</ul>
-						</#list> </#if>
-					</div>
-					<div>
-						<h3 class="item">读书历程：</h3>
-						<#if timeline??> <#list timeline as action>
-						<ul>
-							<li>${action.time?string("yyyy-MM-dd")} ${action.content}</li>
-						</ul>
-						</#list> </#if>
+
+						<div class="tab-content">
+							<div class="tab-pane fade in active" id="tab1">
+								<#if books?exists><#list books as book>
+								<ul>
+									<li><a href="/admin/getBookDetail/${book.id}">${book.getBook().name}</a>
+									</li>
+								</ul>
+								</#list> </#if>
+							</div>
+							<div class="tab-pane fade" id="tab2">
+								<h5 class="item">发起的活动</h5>
+								<#if myActivities??> <#list myActivities as myactivity>
+								<ul>
+									<li><a href="/admin/getActivityDetail/${myactivity.id}">${myactivity.name}</a>
+									</li>
+								</ul>
+								</#list> </#if>
+								<h5 class="item">参加的活动</h5>
+								<#if activities??> <#list activities as activity>
+								<ul>
+									<li><a
+										href="/admin/getActivityDetail/${activity.getActivity().id}">${activity.getActivity().name}</a>
+									</li>
+								</ul>
+								</#list> </#if>
+							</div>
+							<div class="tab-pane fade" id="tab3">
+								<#if timeline??> <#list timeline as action>
+								<ul>
+									<li>${action.time?string("yyyy-MM-dd")} ${action.content}</li>
+								</ul>
+								</#list> </#if>
+							</div>
+						</div>
 					</div>
 				</div>
+				<!--/.panel-->
 			</div>
 		</div>
 	</div>

@@ -12,10 +12,9 @@ public class UserService implements IUserService {
 
 	public Page<User> getUsers(int pageNumber) {
 		int totalPage = User.me.paginate(pageNumber, 8).getTotalPage();
-		if(totalPage < pageNumber){
+		if (totalPage < pageNumber) {
 			return User.me.paginate(totalPage, 8);
-		}
-		else {
+		} else {
 			return User.me.paginate(pageNumber, 8);
 		}
 	}
@@ -32,12 +31,22 @@ public class UserService implements IUserService {
 		return user.save();
 	}
 
-	public User login(User user) {
-		user.set("password", MD5.UseMD5(user.getStr("name") + user.getStr("password"))); //使用用户名+密码作为密码加密明文
+	public User login(int loginType, User user) {
+		user.set("password",
+				MD5.UseMD5(user.getStr("name") + user.getStr("password"))); // 使用用户名+密码作为密码加密明文
 		List<User> userComfirm = User.me.getByName(user.getStr("name"));
-		for (User user2 : userComfirm) {
-			if(user2.get("password").equals(user.get("password")) && (user2.getInt("level") == 1)){
-				return user2;
+		if (loginType == 1)
+			for (User user2 : userComfirm) {
+				if (user2.get("password").equals(user.get("password"))
+						&& (user2.getInt("level") == 1)) {
+					return user2;
+				}
+			}
+		else {
+			for (User user2 : userComfirm) {
+				if(user2.get("password").equals(user.get("password")) && (user2.getInt("level") == 2)){
+					return user2;
+				}
 			}
 		}
 		return null;

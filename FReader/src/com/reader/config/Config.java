@@ -12,6 +12,7 @@ import com.jfinal.plugin.activerecord.tx.TxByRegex;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.plugin.spring.IocInterceptor;
 import com.jfinal.plugin.spring.SpringPlugin;
+import com.reader.controller.AppController;
 import com.reader.controller.DemoController;
 import com.reader.model.Activity;
 import com.reader.model.ActivityUsers;
@@ -40,6 +41,7 @@ public class Config extends JFinalConfig{
 		me.add("/demo", DemoController.class);
 		me.add(new FrontRoute());
 		me.add(new AdminRoute());
+		me.add("/app", AppController.class);
 	}
 
 	@Override
