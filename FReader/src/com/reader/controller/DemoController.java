@@ -1,26 +1,47 @@
 package com.reader.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 import com.jfinal.aop.Before;
 import com.jfinal.aop.ClearInterceptor;
 import com.jfinal.aop.ClearLayer;
 import com.jfinal.core.Controller;
 import com.jfinal.core.JFinal;
+import com.jfinal.ext.render.excel.JxlsRender;
+import com.jfinal.ext.render.excel.PoiRender;
+import com.jfinal.kit.PathKit;
+import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.plugin.spring.Inject.BY_NAME;
 import com.jfinal.plugin.spring.IocInterceptor;
 import com.jfinal.upload.UploadFile;
 import com.reader.model.Blog;
 import com.reader.model.Book;
+import com.reader.model.Type;
 import com.reader.model.User;
+import com.reader.service.interfaces.IBookService;
 
 @Before(IocInterceptor.class)
 public class DemoController extends Controller {
+	@BY_NAME
+	private IBookService bookService;
 
 	@ClearInterceptor(ClearLayer.ALL)
 	public void index() {
@@ -111,5 +132,42 @@ public class DemoController extends Controller {
 	public void download(){
 		Book  book = Book.me.findById(getParaToInt());
 		renderFile(new File(JFinal.me().getServletContext().getRealPath("/") + "/" + book.getStr("url").replace("\\", "/")));
+	}
+	/*
+	 * 导出excel表格
+	 */
+	public void excelGen(){
+		List<Type> conList = bookService.getAllTypes();
+		PoiRender excel = new PoiRender(conList);
+		String[] columns = {"id","name"};
+		String[] headers = {"编号","姓名"};
+		render(excel.sheetName("表1").headers(headers).columns(columns).fileName("类型表格.xls"));
+	}
+	
+	/*
+	 * 导入Excel表格
+	 */
+	public void excelRead(){
+		List<Object> list = new ArrayList<Object>();
+		  HSSFWorkbook workbook = null;
+		try {
+			workbook = new HSSFWorkbook(new FileInputStream(new  File(JFinal.me().getServletContext().getRealPath("/") + "/" + "upload/bbb.xls")));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		HSSFSheet sheet = workbook.getSheet("aaa");
+		  
+		int row = sheet.getPhysicalNumberOfRows();
+		for (int i = 1; i < row; i++) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			HSSFRow row2 = sheet.getRow(i);
+			map.put("id", row2.getCell(0).getStringCellValue());
+			map.put("name", row2.getCell(1).getStringCellValue());
+			System.out.println(map.get("id").toString() + map.get("name").toString());
+			list.add(map);
+		}
+		renderJson(list);
 	}
 }

@@ -30,4 +30,7 @@ public class Activity extends Model<Activity> {
 		return paginate(pageNumber, pageSize, "select *", "from activity order by id asc");
 	}
 	
+	public Page<Activity> paginate(int pageNumber, int pageSize, String search) {
+		return Activity.me.paginate(pageNumber, 8, "select *", "from activity where name like '%" + search + "%' or content like '%" + search + "%'" );
+	}
 }

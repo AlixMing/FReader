@@ -36,6 +36,10 @@ public class User extends Model<User> {
 		return paginate(pageNumber, pageSize, "select *", "from user where level = 2 order by id asc");
 	}
 	
+	public Page<User> paginate(int pageNumber, int pageSize, String search) {
+		return User.me.paginate(pageNumber, 8, "select *", "from user where name like '%" + search + "%'");
+	}
+	
 	public List<User> getByName(String name){
 		return User.me.find("select * from user where name = ?", name);
 	}

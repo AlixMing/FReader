@@ -2,9 +2,10 @@
 <body>
 	<#include "/admin/common/common.html"/> <@common/>
 	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-		<form role="search">
+		<form role="search" action="/admin/search/1-2">
 			<div class="form-group">
-				<!-- <input type="text" class="form-control" placeholder="Search"> -->
+				<input type="text" class="form-control" placeholder="查找：活动名 or 活动内容"
+					name="search">
 			</div>
 		</form>
 		<ul class="nav menu">
@@ -14,12 +15,13 @@
 			<li><a href="/admin/getBooks/"><span
 					class="glyphicon glyphicon-th"></span>书籍管理</a>
 			</li>
+			<li><a href="/admin/getTypes/"><span class="glyphicon glyphicon-dashboard"></span>书籍类型管理</a>
+			</li>
 			<li class="active"><a href=""><span
 					class="glyphicon glyphicon-list-alt"></span>活动管理</a>
 			</li>
 		</ul>
 	</div>
-	<!--/.sidebar-->
 
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 		<div class="row">
@@ -38,8 +40,7 @@
 					<div class="panel-heading">
 						<span>活动总数：${totalRaw}</span> <span class='add'
 							style="float:right; margin-right:20px;"><a
-							href="/admin/newActivity">新增</a>
-						</span>
+							href="/admin/newActivity">新增</a> </span>
 					</div>
 					<!-- Table -->
 					<table class="table">
@@ -68,8 +69,7 @@
 								<td>${activity.content[0..20]}...</td> <#else>
 								<td>${activity.content}</td> </#if>
 								<td><span class='delete'><a class="btn btn-primary"
-										href="/admin/delActivity/${activity.id}-${current}">删除</a>
-								</span></td>
+										href="/admin/delActivity/${activity.id}-${current}">删除</a> </span></td>
 							</tr>
 							</#list>
 						</tbody>
@@ -77,7 +77,7 @@
 				</div>
 			</div>
 		</div>
-		<#include "/admin/common/page.html"/> <@page/>
+		<#include "common/page.html"/> <@page/>
 	</div>
 </body>
 </@head>

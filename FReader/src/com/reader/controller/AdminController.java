@@ -35,44 +35,85 @@ public class AdminController extends Controller {
 	private ITimelineService timelineService;
 	@BY_NAME
 	private IActivityUsersService activityUsersService;
-	
+
 	public void index() {
 		redirect("/admin/getUser/");
 	}
 
 	/*
-	 * 登陆
-	 * URL：/admin/login
+	 * 登陆 URL：/admin/login
 	 */
 	@ClearInterceptor
 	public void login() {
 		User user = userService.login(1, getModel(User.class));
 		setSessionAttr("user", user);
-		if(user != null){
+		if (user != null) {
 			redirect("/admin/getUser/");
 		}
 	}
-	
+
 	/*
-	 * 退出登录
-	 * URL：/admin/logout
+	 * 退出登录 URL：/admin/logout
 	 */
-	public void logout(){
+	public void logout() {
 		removeSessionAttr("user");
 		redirect("/admin/login.html");
 	}
 
-	//TODO 如何实现页面下载数加1
+	// TODO 如何实现页面下载数加1
 	/*
-	 * 下载书籍
-	 * url: /admin/download/IdNum
+	 * 下载书籍 url: /admin/download/IdNum
 	 */
-	public void download(){
-		Book  book = bookService.download(getParaToInt());
-		renderFile(new File(JFinal.me().getServletContext().getRealPath("/") + "/" + book.getStr("url").replace("\\", "/")));
-		//redirect("/admin/getBookDetail/" + getParaToInt());
+	public void download() {
+		Book book = bookService.download(getParaToInt());
+		renderFile(new File(JFinal.me().getServletContext().getRealPath("/")
+				+ "/" + book.getStr("url").replace("\\", "/")));
+		// redirect("/admin/getBookDetail/" + getParaToInt());
 	}
-	
+
+	/*
+	 * 搜索 url:/admin/search/pageNum-type?search=*** //type=1 user, type=2
+	 * activity, type=3 book
+	 */
+	public void search() {
+		String searchString = getPara("search");
+		int pageNum = getParaToInt(0) == null ? 1 : getParaToInt(0);
+		// renderJson("{a:b}");
+		switch (getParaToInt(1)) {
+		case 1:// user
+			Page<User> userPage = userService.findByName(searchString, pageNum);
+			System.out.println(userPage.toString());
+			setAttr("type", 1);
+			setAttr("search", searchString);
+			setAttr("users", userPage.getList());
+			setAttr("totalPage", userPage.getTotalPage());
+			setAttr("current", userPage.getPageNumber());
+			setAttr("totalRaw", userPage.getTotalRow());
+			break;
+		case 2:// activity
+			Page<Activity> activityPage = activityService.findByName(
+					searchString, pageNum);
+			setAttr("type", 2);
+			setAttr("search", searchString);
+			setAttr("activities", activityPage.getList());
+			setAttr("totalPage", activityPage.getTotalPage());
+			setAttr("current", activityPage.getPageNumber());
+			setAttr("totalRaw", activityPage.getTotalRow());
+			break;
+		case 3:// book
+			Page<Book> bookPage = bookService.findByName(searchString, pageNum);
+			setAttr("type", 3);
+			setAttr("search", searchString);
+			setAttr("books", bookPage.getList());
+			setAttr("totalPage", bookPage.getTotalPage());
+			setAttr("current", bookPage.getPageNumber());
+			setAttr("totalRaw", bookPage.getTotalRow());
+			break;
+		default:
+			break;
+		}
+	}
+
 	/*
 	 * user 分页得到user列表url:/admin/getUser/pageNum>0
 	 */
@@ -113,32 +154,33 @@ public class AdminController extends Controller {
 	 */
 	public void updateUser() {
 		User user = User.me.findById(getModel(User.class).get("id"));
-		user.set("name", getModel(User.class).get("name")).set("password",
-				MD5.UseMD5(getModel(User.class).getStr("name") + getModel(User.class).getStr("password")));
+		user.set("name", getModel(User.class).get("name")).set(
+				"password",
+				MD5.UseMD5(getModel(User.class).getStr("name")
+						+ getModel(User.class).getStr("password")));
 		if (userService.updateUser(user)) {
 			redirect("/admin/getUser/" + getPara());
 		} else {
 			renderJson("{status:false}");
 		}
 	}
-	
+
 	/*
-	 * user 得到user的读书记录、活动记录和时间线信息
-	 * url:/admin/getUserDetail/idNum
+	 * user 得到user的读书记录、活动记录和时间线信息 url:/admin/getUserDetail/idNum
 	 */
-	public void getUserDetail(){
+	public void getUserDetail() {
 		User user = User.me.findById(getParaToInt());
 		setAttr("userName", user.get("name"));
 		setAttr("books", user.getPBooks());
 		setAttr("myActivities", user.getActivities());
-		setAttr("activities", activityUsersService.getActivityUsersByUser(getParaToInt()));
+		setAttr("activities",
+				activityUsersService.getActivityUsersByUser(getParaToInt()));
 		setAttr("timeline", timelineService.getTimelines(user.getInt("id")));
 		render("userDetail.html");
 	}
 
 	/*
-	 * activity 分页得到activity列表
-	 * url:/admin/getActivities/pageNum>0
+	 * activity 分页得到activity列表 url:/admin/getActivities/pageNum>0
 	 */
 	public void getActivities() {
 		Page<Activity> activityPage = activityService
@@ -152,8 +194,7 @@ public class AdminController extends Controller {
 
 	// TODO 最后统一改为json数据传输，即使用Ajax异步操作，实践！！！
 	/*
-	 * activity 删除activity 
-	 * url:/admin/delActivity/idNum-pageNum
+	 * activity 删除activity url:/admin/delActivity/idNum-pageNum
 	 */
 	public void delActivity() {
 		if (activityService.delActivity(getParaToInt(0))) {
@@ -162,54 +203,51 @@ public class AdminController extends Controller {
 			renderJson("{status:false}");
 		}
 	}
-	
+
 	/*
-	 * activity 新增活动
-	 * url:/admin/newActivity
+	 * activity 新增活动 url:/admin/newActivity
 	 */
-	public void newActivity(){
+	public void newActivity() {
 	}
-	
+
 	/*
-	 * activity 添加activity 
-	 * url:/admin/saveActivity/
+	 * activity 添加activity url:/admin/saveActivity/
 	 */
-	public void saveActivity(){
+	public void saveActivity() {
 		Activity activity = getModel(Activity.class);
-		if(activityService.saveActivity(activity)){
+		if (activityService.saveActivity(activity)) {
 			redirect("/admin/getActivities/");
-		}else{
+		} else {
 			renderJson("{status:false}");
 		}
 	}
-	
+
 	/*
-	 * activity 得到activity详情
-	 * url:/admin/getActivityDetail/
+	 * activity 得到activity详情 url:/admin/getActivityDetail/
 	 */
-	public void getActivityDetail(){
-		setAttr("activity",  activityService.getActivity(getParaToInt()));
+	public void getActivityDetail() {
+		setAttr("activity", activityService.getActivity(getParaToInt()));
+		setAttr("activityUsers", activityUsersService.getUsersByActivity(getParaToInt()));
 		render("activityDetail.html");
 	}
-	
+
 	/*
-	 * book 分页得到book列表
-	 * url:/admin/getBooks/pageNum-typeNumId  pageNum>0,typeNumId输入0-所有 
+	 * book 分页得到book列表 url:/admin/getBooks/pageNum-typeNumId
+	 * pageNum>0,typeNumId输入0-所有
 	 */
 	public void getBooks() {
-		Page<Book> bookPage = bookService
-				.getBooks(getPara(1) == null ? 0 : getParaToInt(1),getPara(0) == null ? 1 : getParaToInt(0));
+		Page<Book> bookPage = bookService.getBooks(getPara(1) == null ? 0
+				: getParaToInt(1), getPara(0) == null ? 1 : getParaToInt(0));
 		setAttr("books", bookPage.getList());
 		setAttr("totalPage", bookPage.getTotalPage());
 		setAttr("current", bookPage.getPageNumber());
 		setAttr("totalRaw", bookPage.getTotalRow());
 		render("book.html");
 	}
-	
+
 	// TODO 最后统一改为json数据传输，即使用Ajax异步操作，实践！！！
 	/*
-	 * book 删除book 
-	 * url:/admin/delBook/idNum-pageNum
+	 * book 删除book url:/admin/delBook/idNum-pageNum
 	 */
 	public void delBook() {
 		if (bookService.delBook(getParaToInt(0))) {
@@ -218,20 +256,18 @@ public class AdminController extends Controller {
 			renderJson("{status:false}");
 		}
 	}
-	
+
 	/*
-	 * book 新增图书
-	 * url:/admin/newBook
+	 * book 新增图书 url:/admin/newBook
 	 */
-	public void newBook(){
+	public void newBook() {
 		setAttr("types", bookService.getAllTypes());
 	}
-	
+
 	/*
-	 * book 保存图书
-	 * url:/admin/saveBook
+	 * book 保存图书 url:/admin/saveBook
 	 */
-	public void saveBook(){
+	public void saveBook() {
 		UploadFile file = getFile("book.picture", "book", 1024 * 1024 * 2);
 		UploadFile file2 = getFile("book.url", "book", 1024 * 1024 * 5);
 		Book book = getModel(Book.class);
@@ -241,15 +277,22 @@ public class AdminController extends Controller {
 		book.save();
 		redirect("/admin/getBooks/");
 	}
-	
+
 	/*
-	 * book 查看book基本信息
-	 * url:/admin/getBookDetail/idNum
+	 * book 查看book基本信息 url:/admin/getBookDetail/idNum
 	 */
 	public void getBookDetail() {
 		Book book = bookService.getBook(getParaToInt());
 		setAttr("book", book);
 		setAttr("comments", commentService.getCommentByBookId(getParaToInt()));
 		render("bookDetail.html");
+	}
+	
+	/*
+	 * type 查看所有书籍类型
+	 * url:/admin/getTypes
+	 */
+	public void getTypes(){
+		render("type.html");
 	}
 }

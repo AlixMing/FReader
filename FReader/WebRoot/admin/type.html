@@ -1,0 +1,68 @@
+<#include "/admin/common/head.html"/> <@head>
+<body>
+	<#include "/admin/common/common.html"/> <@common/>
+	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<form role="search" action="#">
+			<div class="form-group">
+				<!-- <input type="text" class="form-control" placeholder="查找：姓名"
+					name="search"> -->
+			</div>
+		</form>
+		<ul class="nav menu">
+			<li class="active"><a href=""><span
+					class="glyphicon glyphicon-stats"></span>用户管理</a>
+			</li>
+			<li><a href="/admin/getBooks/"><span
+					class="glyphicon glyphicon-th"></span>书籍管理</a>
+			</li>
+			<li><a href="#"><span class="glyphicon glyphicon-dashboard"></span>书籍类型管理</a>
+			</li>
+			<li><a href="/admin/getActivities/"><span
+					class="glyphicon glyphicon-list-alt"></span>活动管理</a>
+			</li>
+		</ul>
+	</div>
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="#"><span class="glyphicon glyphicon-home"></span>
+				</a>
+				</li>
+				<li class="active">书籍类型</li>
+			</ol>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<span>总类型数：${totalRaw}</span>
+					</div>
+					<div class="panel-body">
+						<ul class="todo-list">
+							<li class="todo-list-item">
+								<div class="checkbox">
+									<input type="checkbox" id="checkbox" /> <label for="checkbox">Make
+										a plan for today</label>
+								</div>
+								<div class="pull-right action-buttons">
+									<a href="#"><span class="glyphicon glyphicon-pencil"></span>
+									</a><a href="#" class="trash"><span
+										class="glyphicon glyphicon-trash"></span> </a>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="panel-footer">
+						<div class="input-group">
+							<input id="btn-input" type="text" class="form-control input-md"
+								placeholder="Add new task" /> <span class="input-group-btn">
+								<button class="btn btn-primary btn-md" id="btn-todo">Add</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</@head>

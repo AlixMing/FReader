@@ -28,9 +28,13 @@ public class Book extends Model<Book> {
 	
 	public Page<Book> paginate(int typeId, int pageNumber, int pageSize){
 		if (typeId == 0) {
-			return paginate(pageNumber, pageSize, "select *", "from book order by id asc");
+			return paginate(pageNumber, pageSize, "select * ", "from book order by id asc");
 		}else {
-			return paginate(pageNumber, pageSize, "select *", "from book where typeId = ? order by id asc", typeId);
+			return paginate(pageNumber, pageSize, "select * ", "from book where typeId = ? order by id asc", typeId);
 		}
+	}
+	
+	public Page<Book> paginate(int pageNumber, int pageSize, String search) {
+		return Book.me.paginate(pageNumber, 8, "select * ", "from book where name like '%" + search + "%' or author like '%" + search + "%'");
 	}
 }

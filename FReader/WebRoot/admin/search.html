@@ -1,0 +1,156 @@
+<#include "/admin/common/head.html"/> <@head>
+<body>
+	<#include "/admin/common/common.html"/> <@common/>
+	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<form role="search" action="/admin/search/3">
+			<div class="form-group">
+				<!-- <input type="text" class="form-control" placeholder="查找：书名 or 作者" name="search"> -->
+			</div>
+		</form>
+		<ul class="nav menu">
+			<li><a href="/admin/getUser/"><span
+					class="glyphicon glyphicon-stats"></span>用户管理</a></li>
+			<li><a href="/admin/getBooks/"><span
+					class="glyphicon glyphicon-th"></span>书籍管理</a></li>
+			<li><a href="#"><span class="glyphicon glyphicon-dashboard"></span>书籍类型管理</a>
+			</li>
+			<li><a href="/admin/getActivities/"><span
+					class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
+		</ul>
+	</div>
+
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="#"><span class="glyphicon glyphicon-home"></span>
+				</a>
+				</li>
+				<li class="active">搜索</li>
+			</ol>
+		</div>
+		<!--/.row-->
+
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<!-- Default panel contents -->
+					<div class="panel-heading">
+						<span>查找总数：${totalRaw}</span>
+					</div>
+					<#if type == 1>
+					<table class="table">
+						<thead>
+							<tr>
+								<th></th>
+								<th></th>
+								<th>头像</th>
+								<th>用户名</th>
+								<th>密码</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<#list users as user>
+							<tr style="height:60px">
+								<form action="/admin/updateUser/${current}" role="form">
+									<td>${user_index + 1}</td>
+									<td><input type="text" style="display: none"
+										value='${user.id}' name="user.id"></td>
+									<td><a href="/admin/getUserDetail/${user.id}"><img
+											src="/${user.picture?replace('\\' , '/')}?tempid="
+											+Math.random()" alt="图片加载失败" width="60" height="34" /> </a></td>
+									<td><input id="name" type="text" value='${user.name}'
+										name="user.name" /></td>
+									<td><input id="pw" type="text" name="user.password"
+										placeholder="******" /></td>
+									<td><span class='confirm'><input
+											class="btn btn-primary" type="submit" value="修改"> </span> <span
+										class='delete'><a class="btn btn-primary"
+											href="/admin/delUser/${user.id}-${current}">删除</a> </span>
+									</td>
+								</form>
+							</tr>
+							</#list>
+						</tbody>
+					</table>
+					<#elseif type == 2>
+					<table class="table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>活动名</th>
+								<th>发起人</th>
+								<th>活动状态̬</th>
+								<th style="width:450px;">活动介绍</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<#list activities as activity>
+							<tr style="height:60px">
+								<td>${activity_index + 1}</td>
+								<td><a href="/admin/getActivityDetail/${activity.id}">${activity.name}</a>
+								</td>
+								<td>${activity.getUser().name}</td>
+								<!-- <td>${activity.begintime?string("yyyy-MM-dd HH:mm")}</td>
+									<td>${activity.endtime?string("yyyy-MM-dd HH:mm")}</td> -->
+								<td><#if .now?datetime lt activity.begintime> 活动未开始
+									<#elseif .now?datetime lt activity.endtime> 活动进行中 <#else> 活动已结束
+									</#if></td> <#if activity.content?length gt 20>
+								<td>${activity.content[0..20]}...</td> <#else>
+								<td>${activity.content}</td> </#if>
+								<td><span class='delete'><a class="btn btn-primary"
+										href="/admin/delActivity/${activity.id}-${current}">删除</a> </span>
+								</td>
+							</tr>
+							</#list>
+						</tbody>
+					</table>
+					<#else>
+					<table class="table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>图片</th>
+								<th width="200">书名</th>
+								<th width="200">作者</th>
+								<th width="200">类型</th>
+								<th width="200">下载数</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<#list books as book>
+							<tr>
+								<td>${book_index + 1}</td>
+								<td><img src="/${book.picture?replace('\\' , '/')}?tempid="
+									+Math.random()" alt="图片加载失败" height="80" /></td>
+								<td><a href="/admin/getBookDetail/${book.id}">${book.name}</a>
+								</td>
+								<td>${book.author}</td>
+								<td>${book.getType().name}</td>
+								<td>${book.download}</td>
+								<td><span class='delete'><a class="btn btn-primary"
+										href="/admin/delBook/${book.id}-${current}">删除</a> </span>
+								</td>
+							</tr>
+							</#list>
+						</tbody>
+					</table>
+					</#if>
+				</div>
+			</div>
+		</div>
+		<div class="green-black">
+			<a href="1-${type}?search=${search}">First Page</a> <#if current gt
+			2> ... </#if> <#if current != 1> <a
+				href='${current-1}-${type}?search=${search}'>${current-1}</a> </#if>
+			<span class="current">${current}</span> <#if current lt totalPage> <a
+				href='${current+1}-${type}?search=${search}'>${current+1}</a> </#if>
+			<#if totalPage gt current+1> ... </#if> <#if totalPage gte current> <a
+				href='${totalPage}-${type}?search=${search}'>Last Page</a> <#else> <a
+				href='${current}-${type}?search=${search}'>Last Page</a> </#if>
+		</div>
+	</div>
+</body>
+</@head>

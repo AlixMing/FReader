@@ -5,6 +5,7 @@ import com.reader.model.User;
 
 public interface IUserService {
 	Page<User> getUsers(int pageNumber);
+	Page<User> findByName(String searchName, int pageNumber);
 	boolean delUser(int id);
 	boolean updateUser(User user);
 	boolean saveUser(User user);

@@ -39,8 +39,8 @@ public class Config extends JFinalConfig{
 	@Override
 	public void configRoute(Routes me) {
 		me.add("/demo", DemoController.class);
-		me.add(new FrontRoute());
 		me.add(new AdminRoute());
+		me.add(new FrontRoute());
 		me.add("/app", AppController.class);
 	}
 

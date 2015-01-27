@@ -2,16 +2,21 @@
 <body>
 	<#include "/admin/common/common.html"/> <@common/>
 	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-		<form role="search">
+		<form role="search" action="/admin/search/1-3">
 			<div class="form-group">
-				<!-- <input type="text" class="form-control" placeholder="Search"> -->
+				<input type="text" class="form-control" placeholder="查找：书名 or 作者"
+					name="search">
 			</div>
 		</form>
 		<ul class="nav menu">
 			<li><a href="/admin/getUser/"><span
-					class="glyphicon glyphicon-stats"></span>用户管理</a></li>
+					class="glyphicon glyphicon-stats"></span>用户管理</a>
+			</li>
 			<li class="active"><a href=""><span
-					class="glyphicon glyphicon-th"></span>书籍管理</a></li>
+					class="glyphicon glyphicon-th"></span>书籍管理</a>
+			</li>
+			<li><a href="#"><span class="glyphicon glyphicon-dashboard"></span>书籍类型管理</a>
+			</li>
 			<li><a href="/admin/getActivities/"><span
 					class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
 		</ul>
@@ -22,95 +27,84 @@
 		<div class="row">
 			<ol class="breadcrumb">
 				<li><a href="#"><span class="glyphicon glyphicon-home"></span>
-				</a>
+				</a></li>
+				<li><a href="/admin/getBooks/">书籍</a>
 				</li>
-				<li><a href="/admin/getBooks/">书籍</a></li>
 				<li class="active">书籍详情</li>
 			</ol>
 		</div>
 		<!--/.row-->
-
 		<div class="row">
 			<div class="col-lg-12">
+				<div class="panel-heading">
+					<span>${book.name}</span> <span style="float:right;"><a
+						class="btn btn-primary" href="/admin/download/${book.id}">下载</a> </span>
+				</div>
 				<div class="panel panel-default">
-					<!-- Default panel contents -->
-					<div class="panel-heading">
-						<span>${book.name}</span> <span style="float:right;"><a
-							class="btn btn-primary" href="/admin/download/${book.id}">下载</a>
-						</span>
-					</div>
-					<div>
-						<div class="picture">
-							<img src="/${book.picture?replace('\\' , '/')}?tempid="
-								+Math.random()" alt="图片加载失败" height="150" />
+					<div class="panel-body tabs">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab1" data-toggle="tab">书籍详情</a>
+							</li>
+							<li><a href="#tab2" data-toggle="tab">书籍简介</a></li>
+							<li><a href="#tab3" data-toggle="tab">评论列表</a></li>
+						</ul>
+
+						<div class="tab-content">
+							<div class="tab-pane fade in active" id="tab1">
+								<div class="picture">
+									<img src="/${book.picture?replace('\\' , '/')}?tempid="
+										+Math.random()" alt="图片加载失败" height="150" />
+								</div>
+								<div class="message">
+									<ul>
+										<li class="item">书名：<span class="itemD">${book.name}</span>
+										</li>
+										<li class="item">作者：<span class="itemD">${book.author}</span>
+										</li>
+										<li class="item">类型：<span class="itemD">${book.getType().name}</span>
+										</li>
+										<li class="item">下载数：<span class="itemD">${book.download}</span>
+										</li>
+										<li class="item">总推荐数：<span class="itemD">${book.recommentTime}</span>
+										</li>
+										<li class="item">周推荐数：<span class="itemD">${book.weekRecomment}</span>
+										</li>
+									</ul>
+								</div>
+							</div>
+
+							<div class="tab-pane fade" id="tab2">
+								<p class="itemD">${book.descri}</p>
+							</div>
+							<div class="tab-pane fade" id="tab3">
+								<#if comments??>
+								<table class="table">
+									<thead>
+										<tr>
+											<th style="width:250px">评论内容</th>
+											<th>评论时间</th>
+											<th>评论人</th>
+										</tr>
+									</thead>
+									<tbody>
+										<#list comments as comment>
+										<tr>
+											<td>${comment.content}<br> <span style="color:#F40">赞（${comment.praise}）</span>
+											</td>
+											<td>${comment.createTime}</td>
+											<td>${comment.getUser().name}</td>
+										</tr>
+										</#list>
+									</tbody>
+								</table>
+								</#if>
+							</div>
 						</div>
-						<div class="message">
-							<ul>
-								<li class="item">书名：<span class="itemD">${book.name}</span>
-								</li>
-								<li class="item">作者：<span class="itemD">${book.author}</span>
-								</li>
-								<li class="item">类型：<span class="itemD">${book.getType().name}</span>
-								</li>
-								<li class="item">下载数：<span class="itemD">${book.download}</span>
-								</li>
-								<li class="item">总推荐数：<span class="itemD">${book.recommentTime}</span>
-								</li>
-								<li class="item">周推荐数：<span class="itemD">${book.weekRecomment}</span>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<div>
-						<h3 class="item">内容简介：</h3>
-						<p class="itemD">${book.descri}</p>
-					</div>
-					<div>
-						<h3 class="item">评论：</h3>
-						<#if comments??>
-						<div class="panel-body">
-							<table class="table">
-								<thead>
-									<tr>
-										<th style="width:250px">评论内容</th>
-										<th>评论时间</th>
-										<th>评论人</th>
-									</tr>
-								</thead>
-								<tbody>
-									<#list comments as comment>
-									<tr>
-										<td>${comment.content}<br> <span style="color:#F40">赞（${comment.praise}）</span>
-										</td>
-										<td>${comment.createTime}</td>
-										<td>${comment.getUser().name}</td>
-									</tr>
-									</#list>
-								</tbody>
-							</table>
-						</div>
-						</#if>
 					</div>
 				</div>
+				<!--/.panel-->
 			</div>
 		</div>
 	</div>
 </body>
-<script>
-	!function($) {
-		$(document).on("click", "ul.nav li.parent > a > span.icon", function() {
-			$(this).find('em:first').toggleClass("glyphicon-minus");
-		});
-		$(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
-	}(window.jQuery);
-
-	$(window).on('resize', function() {
-		if ($(window).width() > 768)
-			$('#sidebar-collapse').collapse('show')
-	})
-	$(window).on('resize', function() {
-		if ($(window).width() <= 767)
-			$('#sidebar-collapse').collapse('hide')
-	})
-</script>
 </@head>

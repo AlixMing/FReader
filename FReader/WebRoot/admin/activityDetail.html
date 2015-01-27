@@ -2,18 +2,24 @@
 <body>
 	<#include "/admin/common/common.html"/> <@common/>
 	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-		<form role="search">
+		<form role="search" action="/admin/search/1-2">
 			<div class="form-group">
-				<!-- <input type="text" class="form-control" placeholder="Search"> -->
+				<input type="text" class="form-control" placeholder="查找：活动名 or 活动内容"
+					name="search">
 			</div>
 		</form>
 		<ul class="nav menu">
 			<li><a href="/admin/getUser/"><span
-					class="glyphicon glyphicon-stats"></span>用户管理</a></li>
+					class="glyphicon glyphicon-stats"></span>用户管理</a>
+			</li>
 			<li><a href="/admin/getBooks/"><span
-					class="glyphicon glyphicon-th"></span>书籍管理</a></li>
+					class="glyphicon glyphicon-th"></span>书籍管理</a>
+			</li>
+			<li><a href="#"><span class="glyphicon glyphicon-dashboard"></span>书籍类型管理</a>
+			</li>
 			<li class="active"><a href="#"><span
-					class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
+					class="glyphicon glyphicon-list-alt"></span>活动管理</a>
+			</li>
 		</ul>
 	</div>
 	<!--/.sidebar-->
@@ -22,9 +28,9 @@
 		<div class="row">
 			<ol class="breadcrumb">
 				<li><a href="#"><span class="glyphicon glyphicon-home"></span>
-				</a>
+				</a></li>
+				<li><a href="/admin/getActivities/">活动</a>
 				</li>
-				<li><a href="/admin/getActivities/">活动</a></li>
 				<li class="active">活动详情</li>
 			</ol>
 		</div>
@@ -39,51 +45,40 @@
 							href="/admin/getUserDetail/${activity.getUser().id}">${activity.getUser().name}</a>
 						</span>
 					</div>
-					<div>
-						<h3 class="item">活动详情：</h3>
-						<div class="message">
-							<ul>
-								<li class="item">活动名：<span class="itemD">${activity.name}</span>
-								</li>
-								<li class="item">发起人：<span class="itemD">${activity.getUser().name}</span>
-								</li>
-								<li class="item">活动地址：<span class="itemD">${activity.address}</span>
-								</li>
-								<li class="item">开始时间：<span class="itemD">${activity.begintime?string("yyyy-MM-dd")}</span>
-								</li>
-								<li class="item">结束时间：<span class="itemD">${activity.endtime?string("yyyy-MM-dd")}</span>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<div>
-						<h3 class="item">活动参与人：</h3>
-						<#if activities??> <#list activities as activity>
-						<ul>
-							<li>${activity.name}</li>
+					<div class="panel-body tabs">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab1" data-toggle="tab">活动详情</a>
+							</li>
+							<li><a href="#tab2" data-toggle="tab">活动参与人</a>
+							</li>
 						</ul>
-						</#list> </#if>
+						<div class="tab-content">
+							<div class="tab-pane fade in active" id="tab1">
+								<ul>
+									<li class="item">活动名：<span class="itemD">${activity.name}</span>
+									</li>
+									<li class="item">发起人：<span class="itemD">${activity.getUser().name}</span>
+									</li>
+									<li class="item">活动地址：<span class="itemD">${activity.address}</span>
+									</li>
+									<li class="item">开始时间：<span class="itemD">${activity.begintime?string("yyyy-MM-dd")}</span>
+									</li>
+									<li class="item">结束时间：<span class="itemD">${activity.endtime?string("yyyy-MM-dd")}</span>
+									</li>
+								</ul>
+							</div>
+							<div class="tab-pane fade" id="tab2">
+								<#if activityUsers??> <#list activityUsers as activityUser>
+								<ul>
+									<li>${activityUser.getUser().name}</li>
+								</ul>
+								</#list> </#if>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </body>
-<script>
-	!function($) {
-		$(document).on("click", "ul.nav li.parent > a > span.icon", function() {
-			$(this).find('em:first').toggleClass("glyphicon-minus");
-		});
-		$(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
-	}(window.jQuery);
-
-	$(window).on('resize', function() {
-		if ($(window).width() > 768)
-			$('#sidebar-collapse').collapse('show')
-	})
-	$(window).on('resize', function() {
-		if ($(window).width() <= 767)
-			$('#sidebar-collapse').collapse('hide')
-	})
-</script>
 </@head>

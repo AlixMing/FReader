@@ -12,6 +12,8 @@ public class UserService implements IUserService {
 
 	public Page<User> getUsers(int pageNumber) {
 		int totalPage = User.me.paginate(pageNumber, 8).getTotalPage();
+		if(totalPage == 0)
+			return User.me.paginate(1, 8);
 		if (totalPage < pageNumber) {
 			return User.me.paginate(totalPage, 8);
 		} else {
@@ -50,5 +52,16 @@ public class UserService implements IUserService {
 			}
 		}
 		return null;
+	}
+
+	public Page<User> findByName(String searchName, int pageNumber) {
+		int totalPage = User.me.paginate(pageNumber, 8, searchName).getTotalPage();
+		if(totalPage == 0)
+			return User.me.paginate(1, 8, searchName);
+		if (totalPage < pageNumber) {
+			return User.me.paginate(totalPage, 8, searchName);
+		} else {
+			return User.me.paginate(pageNumber, 8, searchName);
+		}
 	}
 }

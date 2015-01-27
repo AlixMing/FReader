@@ -2,18 +2,24 @@
 <body>
 	<#include "/admin/common/common.html"/> <@common/>
 	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-		<form role="search">
+		<form role="search" action="/admin/search/1-2">
 			<div class="form-group">
-				<!-- <input type="text" class="form-control" placeholder="Search"> -->
+				<input type="text" class="form-control" placeholder="查找：活动名 or 活动内容"
+					name="search">
 			</div>
 		</form>
 		<ul class="nav menu">
 			<li><a href="/admin/getUser/"><span
-					class="glyphicon glyphicon-stats"></span>用户管理</a></li>
+					class="glyphicon glyphicon-stats"></span>用户管理</a>
+			</li>
 			<li><a href="/admin/getBooks/"><span
-					class="glyphicon glyphicon-th"></span>书籍管理</a></li>
+					class="glyphicon glyphicon-th"></span>书籍管理</a>
+			</li>
+			<li><a href="#"><span class="glyphicon glyphicon-dashboard"></span>书籍类型管理</a>
+			</li>
 			<li class="active"><a href="#"><span
-					class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
+					class="glyphicon glyphicon-list-alt"></span>活动管理</a>
+			</li>
 		</ul>
 	</div>
 	<!--/.sidebar-->
@@ -22,9 +28,9 @@
 		<div class="row">
 			<ol class="breadcrumb">
 				<li><a href="#"><span class="glyphicon glyphicon-home"></span>
-				</a></li>
-				<li><a href="/admin/getActivities/">活动</a>
+				</a>
 				</li>
+				<li><a href="/admin/getActivities/">活动</a></li>
 				<li class="active">新增活动</li>
 			</ol>
 		</div>
