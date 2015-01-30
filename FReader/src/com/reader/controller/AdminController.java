@@ -1,24 +1,31 @@
 package com.reader.controller;
 
 import java.io.File;
+import java.util.List;
+
 import com.jfinal.aop.Before;
 import com.jfinal.aop.ClearInterceptor;
 import com.jfinal.core.Controller;
 import com.jfinal.core.JFinal;
+import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.spring.Inject.BY_NAME;
 import com.jfinal.upload.UploadFile;
 import com.reader.interceptor.AdminInterceptor;
 import com.reader.model.Activity;
 import com.reader.model.Book;
+import com.reader.model.Type;
 import com.reader.model.User;
+import com.reader.service.impl.TypeService;
 import com.reader.service.interfaces.IActivityService;
 import com.reader.service.interfaces.IActivityUsersService;
 import com.reader.service.interfaces.IBookService;
 import com.reader.service.interfaces.ICommentService;
 import com.reader.service.interfaces.ITimelineService;
+import com.reader.service.interfaces.ITypeService;
 import com.reader.service.interfaces.IUserService;
 import com.reader.util.MD5;
+import com.sun.xml.internal.bind.v2.runtime.Name;
 
 @Before(AdminInterceptor.class)
 public class AdminController extends Controller {
@@ -35,6 +42,8 @@ public class AdminController extends Controller {
 	private ITimelineService timelineService;
 	@BY_NAME
 	private IActivityUsersService activityUsersService;
+	@BY_NAME
+	private ITypeService typeService;
 
 	public void index() {
 		redirect("/admin/getUser/");
@@ -227,7 +236,8 @@ public class AdminController extends Controller {
 	 */
 	public void getActivityDetail() {
 		setAttr("activity", activityService.getActivity(getParaToInt()));
-		setAttr("activityUsers", activityUsersService.getUsersByActivity(getParaToInt()));
+		setAttr("activityUsers",
+				activityUsersService.getUsersByActivity(getParaToInt()));
 		render("activityDetail.html");
 	}
 
@@ -287,12 +297,38 @@ public class AdminController extends Controller {
 		setAttr("comments", commentService.getCommentByBookId(getParaToInt()));
 		render("bookDetail.html");
 	}
-	
+
 	/*
-	 * type 查看所有书籍类型
-	 * url:/admin/getTypes
+	 * type 查看所有书籍类型 url:/admin/getTypes
 	 */
-	public void getTypes(){
+	public void getTypes() {
+		List<Type> typeList = typeService.getTypes();
+		setAttr("types", typeList);
 		render("type.html");
+	}
+
+	/*
+	 * type 根据id删除类型 url:/admin/delType/idNum
+	 */
+	public void delType() {
+		try {
+			typeService.delType(getParaToInt());
+		} catch (Exception e) {
+			renderText("1");
+			return;
+		}
+		// redirect("/admin/getTypes");
+	}
+
+	/*
+	 * type 添加类型 url:/admin/saveType/TypeStr
+	 */
+	public void saveType() {
+		Type type = getModel(Type.class);
+		if (typeService.saveType(type)) {
+			renderText("1");
+		} else {
+			renderText("0");
+		}
 	}
 }

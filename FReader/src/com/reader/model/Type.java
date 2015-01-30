@@ -20,4 +20,8 @@ public class Type extends Model<Type> {
 	public List<Book> getBooks(){
 		return Book.me.find("select * from book where typeId = ? order by praise desc", get("id"));
 	}
+	
+	public List<Type> getAllTypes(){
+		return Type.me.find("select * from type");
+	}
 }

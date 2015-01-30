@@ -15,7 +15,7 @@
 			<li class="active"><a href=""><span
 					class="glyphicon glyphicon-th"></span>书籍管理</a>
 			</li>
-			<li><a href="#"><span class="glyphicon glyphicon-dashboard"></span>书籍类型管理</a>
+			<li><a href="/admin/getTypes/"><span class="glyphicon glyphicon-dashboard"></span>类型管理</a>
 			</li>
 			<li><a href="/admin/getActivities/"><span
 					class="glyphicon glyphicon-list-alt"></span>活动管理</a>
@@ -66,7 +66,7 @@
 								<td><a href="/admin/getBookDetail/${book.id}">${book.name}</a>
 								</td>
 								<td>${book.author}</td>
-								<td>${book.getType().name}</td>
+								<td>${(book.getType().name)!}</td>
 								<!-- <td>
 										<#if book.descri?length lt 100 > 
 											${book.descri}

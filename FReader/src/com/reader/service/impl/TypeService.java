@@ -11,23 +11,22 @@ import com.reader.service.interfaces.ITypeService;
 public class TypeService implements ITypeService {
 
 	public List<Type> getTypes() {
-		// TODO Auto-generated method stub
-		return null;
+		return Type.me.getAllTypes();
 	}
 
 	public boolean delType(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		return Type.me.deleteById(id);
 	}
 
 	public boolean updateType(Type type) {
-		// TODO Auto-generated method stub
-		return false;
+		return type.update();
 	}
 
 	public boolean saveType(Type type) {
-		// TODO Auto-generated method stub
-		return false;
+		if(Type.me.find("select * from type where name = '" + type.getStr("name") + "'").size() == 0)
+			return type.save();
+		else
+			return false;
 	}
 
 }

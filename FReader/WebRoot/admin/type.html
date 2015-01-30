@@ -9,14 +9,14 @@
 			</div>
 		</form>
 		<ul class="nav menu">
-			<li class="active"><a href=""><span
+			<li><a href="/admin/getUser/"><span
 					class="glyphicon glyphicon-stats"></span>用户管理</a>
 			</li>
 			<li><a href="/admin/getBooks/"><span
 					class="glyphicon glyphicon-th"></span>书籍管理</a>
 			</li>
-			<li><a href="#"><span class="glyphicon glyphicon-dashboard"></span>书籍类型管理</a>
-			</li>
+			<li class="active"><a href="#"><span
+					class="glyphicon glyphicon-dashboard"></span>类型管理</a></li>
 			<li><a href="/admin/getActivities/"><span
 					class="glyphicon glyphicon-list-alt"></span>活动管理</a>
 			</li>
@@ -35,28 +35,32 @@
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<span>总类型数：${totalRaw}</span>
+						<span>总类型数：${types?size}</span>
 					</div>
 					<div class="panel-body">
 						<ul class="todo-list">
-							<li class="todo-list-item">
-								<div class="checkbox">
-									<input type="checkbox" id="checkbox" /> <label for="checkbox">Make
-										a plan for today</label>
-								</div>
-								<div class="pull-right action-buttons">
-									<a href="#"><span class="glyphicon glyphicon-pencil"></span>
-									</a><a href="#" class="trash"><span
-										class="glyphicon glyphicon-trash"></span> </a>
-								</div>
-							</li>
+							<#list types as type>
+							<div class="col-md-3">
+								<li class="todo-list-item">
+									<div class="checkbox">
+										<label> ${type.name} </label>
+									</div>
+									<div class="pull-right action-buttons">
+										<a href="#" onclick=""><span
+											class="glyphicon glyphicon-pencil"></span> </a><a href="#"
+											class="trash" onclick="delType(${type.id})"><span
+											class="glyphicon glyphicon-trash"></span> </a>
+									</div>
+								</li>
+							</div>
+							</#list>
 						</ul>
 					</div>
 					<div class="panel-footer">
 						<div class="input-group">
 							<input id="btn-input" type="text" class="form-control input-md"
 								placeholder="Add new task" /> <span class="input-group-btn">
-								<button class="btn btn-primary btn-md" id="btn-todo">Add</button>
+								<button class="btn btn-primary btn-md" onclick="addType()">Add</button>
 							</span>
 						</div>
 					</div>
@@ -65,4 +69,48 @@
 		</div>
 	</div>
 </body>
+<script>
+	function delType(id) {
+		var xmlhttp;
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp = new XMLHttpRequest();
+		} else {// code for IE6, IE5
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.open("GET", "/admin/delType/" + id, true);
+		xmlhttp.send();
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				if(xmlhttp.responseText == "1")
+					alert("该类型存在书籍，不能删除！");
+				else
+					location.reload();
+			}
+		}
+	}
+	
+	function addType() {
+		var str = document.getElementById("btn-input").value;
+		if(str == "")
+			alert("请输入类型！");
+		else{
+		var xmlhttp;
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp = new XMLHttpRequest();
+		} else {// code for IE6, IE5
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.open("GET", "/admin/saveType/?type.name=" + str, true);
+		xmlhttp.send();
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				if(xmlhttp.responseText == "1")
+					location.reload(true);
+				else
+					alert("添加失败，请查看是否已存在！");
+			}
+		}
+		}
+	}
+</script>
 </@head>

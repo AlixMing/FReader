@@ -15,7 +15,7 @@
 			<li class="active"><a href=""><span
 					class="glyphicon glyphicon-th"></span>书籍管理</a>
 			</li>
-			<li><a href="#"><span class="glyphicon glyphicon-dashboard"></span>书籍类型管理</a>
+			<li><a href="/admin/getTypes/"><span class="glyphicon glyphicon-dashboard"></span>类型管理</a>
 			</li>
 			<li><a href="/admin/getActivities/"><span
 					class="glyphicon glyphicon-list-alt"></span>活动管理</a></li>
@@ -61,7 +61,7 @@
 										</li>
 										<li class="item">作者：<span class="itemD">${book.author}</span>
 										</li>
-										<li class="item">类型：<span class="itemD">${book.getType().name}</span>
+										<li class="item">类型：<span class="itemD">${(book.getType().name)!}</span>
 										</li>
 										<li class="item">下载数：<span class="itemD">${book.download}</span>
 										</li>
