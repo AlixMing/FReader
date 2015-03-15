@@ -27,7 +27,16 @@ public class ActivityUsers extends Model<ActivityUsers> {
 	
 	public List<ActivityUsers> getUserByActivityId(int id){
 		return ActivityUsers.me.find("select * from activity_user where activityId = " + id);
-}
+	}
+	
+	public boolean checkIsExist(int activityId, int userId){
+		List<ActivityUsers> activityUsers = ActivityUsers.me.find("select * from activity_user where userId = " + userId + " and activityId = " + activityId);
+		if(activityUsers.size() != 0)
+			return false; //存在时
+		else 
+			return true;
+		
+	}
 	
 	public Activity getActivity(){
 		return Activity.me.findById(get("activityId"));

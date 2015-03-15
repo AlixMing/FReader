@@ -1,21 +1,25 @@
 package com.reader.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.spring.Inject.BY_NAME;
 import com.reader.model.Activity;
+import com.reader.model.Book;
+import com.reader.model.BookUsers;
 import com.reader.model.Comments;
 import com.reader.model.Timeline;
 import com.reader.model.User;
 import com.reader.service.interfaces.IActivityService;
 import com.reader.service.interfaces.IActivityUsersService;
+import com.reader.service.interfaces.IBookService;
+import com.reader.service.interfaces.IBookUsersService;
 import com.reader.service.interfaces.ICommentService;
 import com.reader.service.interfaces.ITimelineService;
 import com.reader.service.interfaces.IUserService;
 import com.reader.util.MD5;
-
 
 public class AppController extends Controller {
 	@BY_NAME
@@ -28,6 +32,10 @@ public class AppController extends Controller {
 	private IActivityUsersService activityUsersService;
 	@BY_NAME
 	private ITimelineService timelineService;
+	@BY_NAME
+	private IBookUsersService bookUsersService;
+	@BY_NAME
+	private IBookService bookService;
 	
 	//评论
 	/*
@@ -47,6 +55,7 @@ public class AppController extends Controller {
 	 * url:/app/saveComment/Comments.class
 	 * 返回值：Boolean status  //false 添加失败，true 添加成功
 	 */
+	//TODO setUserid
 	public void saveComments(){
 		Comments comment = getModel(Comments.class).set("createTime", new Date());
 		renderJson("status", commentService.saveComment(comment));
@@ -87,6 +96,7 @@ public class AppController extends Controller {
 	//TODO 用户信息如何保存
 	public void login(){
 		User user = userService.login(2, getModel(User.class));
+		setSessionAttr("user", user);
 		if(user == null)
 			renderJson("status", false);
 		else 
@@ -129,10 +139,10 @@ public class AppController extends Controller {
 	 * 活动activity
 	 * 查看活动参与人
 	 * url:/app/getActivityMenber/activityId
-	 * 返回值：List<ActivityUsers> activityUsers //得到用户名activityUser.getUser().name
+	 * 返回值：List<User> Users //得到用户名activityUser.getUser().name
 	 */
 	public void getActivityMenber(){
-		renderJson("activityUsers", activityUsersService.getUsersByActivity(getParaToInt()));
+		renderJson("Users", activityUsersService.getUsersByActivity(getParaToInt()));
 	}
 	
 	/*
@@ -153,8 +163,11 @@ public class AppController extends Controller {
 	 * 返回值：List<Activity> activities //得到用户名activities.getUser().name
 	 */
 	public void getJoinedActivity(){
+		List<Activity> activities = new ArrayList<Activity>();
 		User user = getSessionAttr("user");
-		renderJson("activities", activityUsersService.getActivityUsersByUser(user.getInt("id")));
+		activities = activityUsersService.getActivityUsersByUser(user.getInt("id"));
+		System.out.println(activities.size());
+		renderJson("activities", activities);
 	}
 	
 	/*
@@ -164,7 +177,7 @@ public class AppController extends Controller {
 	 * 返回值：List<Activity> activities
 	 */
 	public void getAllActivity(){
-		renderJson("activities", activityService.getActivities(getParaToInt()));
+		renderJson("activities", activityService.getActivities(getParaToInt()).getList());
 	}
 	
 	/*
@@ -190,10 +203,78 @@ public class AppController extends Controller {
 		User user = getSessionAttr("user");
 		renderJson("timelines", timelineService.getTimelines(user.getInt("id")));
 	}
+	
+	/*
+	 * 时间线timeline
+	 * 添加时间线
+	 * url：/app/saveTimeline/timeline.class(timeline.time=xxx&timeline.content=xxx)
+	 * 返回值：Boolean status //false 添加失败，true 添加成功
+	 */
+	public void saveTimeline() {
+		User user = getSessionAttr("user");
+		Timeline timeline = getModel(Timeline.class);
+		timeline.set("userId", user.getInt("id"));
+		renderJson("status", timelineService.saveTimeline(timeline));
+	}
 	//时间线结束
 	
+	//书籍管理
+	/*
+	 * 书籍book
+	 * 添加书籍
+	 * url：/app/saveUserBook/bookId
+	 * 返回值：Boolean status
+	 */
+	public void saveUserBook() {
+		User user = getSessionAttr("user");
+		Book book = bookService.getBook(getParaToInt());
+		BookUsers bookUsers = new BookUsers().set("userId", user.getInt("id")).set("bookId", getParaToInt()).set("url", book.getStr("url"));
+		renderJson("status", bookUsersService.saveBookUsers(bookUsers));
+	}
+	
+	/*
+	 * 书籍book
+	 * 更新书籍信息(读书进度，是否本地删除)
+	 * url:/app/updateUserBook/BookUser.class //或者json数据
+	 * 返回值：Boolean status
+	 */
+	public void updateUserBook() {
+		BookUsers bookUsers = getModel(BookUsers.class);
+		renderJson("status", bookUsersService.updateBookUsers(bookUsers));
+	}
+	
+	/*
+	 * 书籍book
+	 * 获取下载书籍列表
+	 * url：/app/getDownloadBooks
+	 * 返回值：{bookList:List<Book>}
+	 */
+	public void getDownloadBooks() {
+		List<Book> bookList = new ArrayList<Book>();
+		User user = getSessionAttr("user");
+		System.out.println(user.getStr("name"));
+		bookList = bookUsersService.getBooks(user.getInt("id"));
+		System.out.println(bookList.size());
+		renderJson("bookList", bookList);
+	}
+	
+	/*
+	 * 书籍book
+	 * 分页查看可下载的所有书籍
+	 * url：/app/getAllBooks/pageNum
+	 * 返回值：{bookList:List<Book>}
+	 */
+	public void getAllBooks() {
+		renderJson("bookList", bookService.getBooks(0, getParaToInt()).getList());
+	}
+	/*
+	 * 书籍book
+	 * 查看推荐书籍
+	 */
+	//书籍管理结束
 	//推荐
 	/*
 	 * 
 	 */
+	//推荐结束
 }

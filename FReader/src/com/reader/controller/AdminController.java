@@ -7,16 +7,14 @@ import com.jfinal.aop.Before;
 import com.jfinal.aop.ClearInterceptor;
 import com.jfinal.core.Controller;
 import com.jfinal.core.JFinal;
-import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.spring.Inject.BY_NAME;
 import com.jfinal.upload.UploadFile;
-import com.reader.interceptor.AdminInterceptor;
+import com.reader.interceptor.UserInterceptor;
 import com.reader.model.Activity;
 import com.reader.model.Book;
 import com.reader.model.Type;
 import com.reader.model.User;
-import com.reader.service.impl.TypeService;
 import com.reader.service.interfaces.IActivityService;
 import com.reader.service.interfaces.IActivityUsersService;
 import com.reader.service.interfaces.IBookService;
@@ -25,9 +23,8 @@ import com.reader.service.interfaces.ITimelineService;
 import com.reader.service.interfaces.ITypeService;
 import com.reader.service.interfaces.IUserService;
 import com.reader.util.MD5;
-import com.sun.xml.internal.bind.v2.runtime.Name;
 
-@Before(AdminInterceptor.class)
+@Before(UserInterceptor.class)
 public class AdminController extends Controller {
 
 	@BY_NAME
@@ -151,11 +148,13 @@ public class AdminController extends Controller {
 	/*
 	 * user 保存user url:/admin/saveUser/
 	 */
+	@ClearInterceptor
 	public void saveUser() {
 		// User user = getModel(User.class);
-		User user = new User().set("name", getPara(0)).set("password",
-				getPara(1));
-		renderJson("{status:" + userService.saveUser(user) + "}");
+		/*User user = new User().set("name", getPara(0)).set("password",
+				getPara(1)).set("pictureUrl", "upload\\user\\44.jpg");
+		renderJson("{status:" + userService.saveUser(user) + "}");*/
+		renderJson("{status:true}");
 	}
 
 	/*

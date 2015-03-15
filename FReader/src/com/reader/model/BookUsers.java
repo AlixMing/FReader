@@ -1,7 +1,7 @@
 package com.reader.model;
 /*
- * pbook model
- * mysql> desc pbook;
+ * book_user model
+ * mysql> desc book_user;
 +----------+---------------------------+------+-----+---------+----------------+
 
 | Field    | Type                      | Null | Key | Default | Extra          |
@@ -18,10 +18,19 @@ package com.reader.model;
 import com.jfinal.plugin.activerecord.Model;
 
 @SuppressWarnings("serial")
-public class Pbook extends Model<Pbook> {
-	public static final Pbook me = new Pbook();
+public class BookUsers extends Model<BookUsers> {
+	public static final BookUsers me = new BookUsers();
 	
 	public Book getBook(){
 		return Book.me.findById(getInt("bookId"));
 	}
+	/*
+	public List<Book> getBooks(int userId){
+		List<BookUsers> bookUsersList = BookUsers.me.find("select * from book_user where userId = ?", userId);
+		List<Book> books = new ArrayList<Book>();
+		for (BookUsers bookUsers : bookUsersList) {
+			books.add(Book.me.findById(bookUsers.getInt("bookId")));
+		}
+		return books;
+	}*/
 }

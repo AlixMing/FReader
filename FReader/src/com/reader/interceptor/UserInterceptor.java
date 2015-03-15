@@ -4,7 +4,7 @@ import javax.servlet.http.HttpSession;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.core.ActionInvocation;
 
-public class AdminInterceptor implements Interceptor {
+public class UserInterceptor implements Interceptor {
 
 	public void intercept(ActionInvocation ai) {
 		HttpSession session = ai.getController().getSession();

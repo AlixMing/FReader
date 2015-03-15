@@ -24,8 +24,8 @@ public class User extends Model<User> {
 		return Blog.me.find("select * from blog where userId = ?",get("id"));
 	}
 	
-	public List<Pbook> getPBooks(){
-		return Pbook.me.find("select * from pbook where userId = ?",get("id"));
+	public List<BookUsers> getPBooks(){
+		return BookUsers.me.find("select * from pbook where userId = ?",get("id"));
 	}
 	
 	public List<Activity> getActivities(){

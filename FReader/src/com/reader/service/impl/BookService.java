@@ -1,7 +1,9 @@
 package com.reader.service.impl;
 
 import java.util.List;
+
 import org.springframework.stereotype.Service;
+
 import com.jfinal.plugin.activerecord.Page;
 import com.reader.model.Book;
 import com.reader.model.Type;
@@ -20,7 +22,7 @@ public class BookService implements IBookService {
 			return Book.me.paginate(typeId, pageNumber, 8);
 		}
 	}
-
+	
 	public boolean delBook(int id) {
 		return Book.me.deleteById(id);
 	}

@@ -12,7 +12,7 @@ public class UserService implements IUserService {
 
 	public Page<User> getUsers(int pageNumber) {
 		int totalPage = User.me.paginate(pageNumber, 8).getTotalPage();
-		if(totalPage == 0)
+		if (totalPage == 0)
 			return User.me.paginate(1, 8);
 		if (totalPage < pageNumber) {
 			return User.me.paginate(totalPage, 8);
@@ -34,29 +34,33 @@ public class UserService implements IUserService {
 	}
 
 	public User login(int loginType, User user) {
-		user.set("password",
-				MD5.UseMD5(user.getStr("name") + user.getStr("password"))); // 使用用户名+密码作为密码加密明文
+		String md5pw = MD5
+				.UseMD5(user.getStr("name") + user.getStr("password"));// 使用用户名+密码作为密码加密明文
+		user.set("password", md5pw);
 		List<User> userComfirm = User.me.getByName(user.getStr("name"));
-		if (loginType == 1)
+		if (loginType == 1) //后台登陆需要验证是否管理员
 			for (User user2 : userComfirm) {
-				if (user2.get("password").equals(user.get("password"))
+				if (user2.getStr("password").equals(md5pw)
 						&& (user2.getInt("level") == 1)) {
 					return user2;
 				}
 			}
+
 		else {
 			for (User user2 : userComfirm) {
-				if(user2.get("password").equals(user.get("password")) && (user2.getInt("level") == 2)){
+				if (user2.getStr("password").equals(md5pw)) {
 					return user2;
 				}
 			}
 		}
+
 		return null;
 	}
 
 	public Page<User> findByName(String searchName, int pageNumber) {
-		int totalPage = User.me.paginate(pageNumber, 8, searchName).getTotalPage();
-		if(totalPage == 0)
+		int totalPage = User.me.paginate(pageNumber, 8, searchName)
+				.getTotalPage();
+		if (totalPage == 0)
 			return User.me.paginate(1, 8, searchName);
 		if (totalPage < pageNumber) {
 			return User.me.paginate(totalPage, 8, searchName);

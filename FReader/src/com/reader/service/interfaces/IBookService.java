@@ -1,6 +1,7 @@
 package com.reader.service.interfaces;
 
 import java.util.List;
+
 import com.jfinal.plugin.activerecord.Page;
 import com.reader.model.Book;
 import com.reader.model.Type;

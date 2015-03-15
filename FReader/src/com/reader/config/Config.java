@@ -21,7 +21,7 @@ import com.reader.model.Book;
 import com.reader.model.Clocks;
 import com.reader.model.Comments;
 import com.reader.model.Note;
-import com.reader.model.Pbook;
+import com.reader.model.BookUsers;
 import com.reader.model.Recomment;
 import com.reader.model.Timeline;
 import com.reader.model.Type;
@@ -60,7 +60,7 @@ public class Config extends JFinalConfig{
 		arp.addMapping("Clocks", Clocks.class);
 		arp.addMapping("Comments", Comments.class);
 		arp.addMapping("Note", Note.class);
-		arp.addMapping("Pbook", Pbook.class);
+		arp.addMapping("Book_user", BookUsers.class);
 		arp.addMapping("Recomment", Recomment.class);
 		arp.addMapping("Timeline", Timeline.class);
 		arp.addMapping("Activity_user", ActivityUsers.class);

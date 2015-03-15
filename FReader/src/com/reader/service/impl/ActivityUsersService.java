@@ -1,24 +1,44 @@
 package com.reader.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import com.reader.model.Activity;
 import com.reader.model.ActivityUsers;
+import com.reader.model.User;
 import com.reader.service.interfaces.IActivityUsersService;
 
 @Service
 public class ActivityUsersService implements IActivityUsersService {
 
-	public List<ActivityUsers> getActivityUsersByUser(int id) {
-		return ActivityUsers.me.getActivityByUserId(id);
+	public List<Activity> getActivityUsersByUser(int id) {
+		List<ActivityUsers> activityUsersList = ActivityUsers.me.getActivityByUserId(id);
+		List<Activity> activities = new ArrayList<Activity>();
+		for (ActivityUsers activityUser : activityUsersList) {
+			activities.add(Activity.me.findById(activityUser.getInt("activityId")));
+		}
+		return activities;
 	}
 
-	public List<ActivityUsers> getUsersByActivity(int id) {
-		return ActivityUsers.me.getUserByActivityId(id);
+	public List<User> getUsersByActivity(int id) {
+		List<ActivityUsers> activityUsersList = ActivityUsers.me.getUserByActivityId(id);
+		List<User> users = new ArrayList<User>();
+		for (ActivityUsers activityUser : activityUsersList) {
+			users.add(User.me.findById(activityUser.getInt("userId")));
+		}
+		return users;
 	}
 
 	public boolean saveActivityUsers(int userId, int activityId){
-		ActivityUsers activityUsers = new ActivityUsers().set("userId", userId).set("activityId", activityId);
-		return activityUsers.save();
+		if(ActivityUsers.me.checkIsExist(activityId, userId)){
+			ActivityUsers activityUsers = new ActivityUsers().set("userId", userId).set("activityId", activityId);
+			return activityUsers.save();
+		}
+		else {
+			return false;
+		}
 	}
 
 	public boolean delActivityUsers(int userId, int activityId) {
